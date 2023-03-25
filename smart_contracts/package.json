@@ -9,13 +9,26 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/hardhat": "^6.1.5",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
     "ethers": "^5.7.2",
     "hardhat": "^2.13.0",
-    "hardhat-deploy": "^0.11.25"
+    "hardhat-deploy": "^0.11.25",
+    "solidity-coverage": "^0.8.2",
+    "ts-node": "^10.9.1",
+    "typechain": "^8.1.1",
+    "typescript": "^5.0.2"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.6.1",
     "@openzeppelin/contracts": "^4.7.2",
     "dotenv": "^16.0.3",
     "hardhat-gas-reporter": "^1.0.9",
