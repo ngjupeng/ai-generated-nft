@@ -34,17 +34,27 @@ export interface AINFTInterface extends utils.Interface {
     "balanceOf(address)": FunctionFragment;
     "ethToUSD(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getAuctionContractAddress()": FunctionFragment;
     "getLatestPrice()": FunctionFragment;
+    "getLimitedTokenCounter()": FunctionFragment;
+    "getMaximumLimitedTokenSupply()": FunctionFragment;
+    "getMinimumUSDAmount()": FunctionFragment;
+    "getPriceFeed()": FunctionFragment;
+    "getTokenCounter()": FunctionFragment;
+    "grantPermission(address)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
+    "isLimitedEditionNft(uint256)": FunctionFragment;
+    "isUserAuthorized(address)": FunctionFragment;
+    "mintLimitedEditionNft(string)": FunctionFragment;
     "mintNft(string)": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "s_tokenCounter()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
+    "setAuctionContract(address)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
@@ -59,17 +69,27 @@ export interface AINFTInterface extends utils.Interface {
       | "balanceOf"
       | "ethToUSD"
       | "getApproved"
+      | "getAuctionContractAddress"
       | "getLatestPrice"
+      | "getLimitedTokenCounter"
+      | "getMaximumLimitedTokenSupply"
+      | "getMinimumUSDAmount"
+      | "getPriceFeed"
+      | "getTokenCounter"
+      | "grantPermission"
       | "isApprovedForAll"
+      | "isLimitedEditionNft"
+      | "isUserAuthorized"
+      | "mintLimitedEditionNft"
       | "mintNft"
       | "name"
       | "owner"
       | "ownerOf"
       | "renounceOwnership"
-      | "s_tokenCounter"
       | "safeTransferFrom(address,address,uint256)"
       | "safeTransferFrom(address,address,uint256,bytes)"
       | "setApprovalForAll"
+      | "setAuctionContract"
       | "supportsInterface"
       | "symbol"
       | "tokenURI"
@@ -95,12 +115,52 @@ export interface AINFTInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getAuctionContractAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getLatestPrice",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getLimitedTokenCounter",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMaximumLimitedTokenSupply",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMinimumUSDAmount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPriceFeed",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenCounter",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "grantPermission",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isLimitedEditionNft",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isUserAuthorized",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mintLimitedEditionNft",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "mintNft",
@@ -114,10 +174,6 @@ export interface AINFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "s_tokenCounter",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -140,6 +196,10 @@ export interface AINFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setApprovalForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setAuctionContract",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -172,11 +232,51 @@ export interface AINFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getAuctionContractAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getLatestPrice",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getLimitedTokenCounter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMaximumLimitedTokenSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMinimumUSDAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPriceFeed",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenCounter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "grantPermission",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isApprovedForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isLimitedEditionNft",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isUserAuthorized",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "mintLimitedEditionNft",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mintNft", data: BytesLike): Result;
@@ -185,10 +285,6 @@ export interface AINFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "s_tokenCounter",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -201,6 +297,10 @@ export interface AINFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setApprovalForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAuctionContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -222,14 +322,22 @@ export interface AINFTInterface extends utils.Interface {
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
+    "GrantedPermission(address,address)": EventFragment;
+    "MintedNewLimitedNFT(address,uint256)": EventFragment;
+    "MintedNewNFT(address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "WithdrawFund(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "GrantedPermission"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MintedNewLimitedNFT"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MintedNewNFT"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawFund"): EventFragment;
 }
 
 export interface ApprovalEventObject {
@@ -256,6 +364,41 @@ export type ApprovalForAllEvent = TypedEvent<
 
 export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
 
+export interface GrantedPermissionEventObject {
+  from: string;
+  to: string;
+}
+export type GrantedPermissionEvent = TypedEvent<
+  [string, string],
+  GrantedPermissionEventObject
+>;
+
+export type GrantedPermissionEventFilter =
+  TypedEventFilter<GrantedPermissionEvent>;
+
+export interface MintedNewLimitedNFTEventObject {
+  user: string;
+  tokenId: BigNumber;
+}
+export type MintedNewLimitedNFTEvent = TypedEvent<
+  [string, BigNumber],
+  MintedNewLimitedNFTEventObject
+>;
+
+export type MintedNewLimitedNFTEventFilter =
+  TypedEventFilter<MintedNewLimitedNFTEvent>;
+
+export interface MintedNewNFTEventObject {
+  user: string;
+  tokenId: BigNumber;
+}
+export type MintedNewNFTEvent = TypedEvent<
+  [string, BigNumber],
+  MintedNewNFTEventObject
+>;
+
+export type MintedNewNFTEventFilter = TypedEventFilter<MintedNewNFTEvent>;
+
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
   newOwner: string;
@@ -279,6 +422,17 @@ export type TransferEvent = TypedEvent<
 >;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
+
+export interface WithdrawFundEventObject {
+  owner: string;
+  amount: BigNumber;
+}
+export type WithdrawFundEvent = TypedEvent<
+  [string, BigNumber],
+  WithdrawFundEventObject
+>;
+
+export type WithdrawFundEventFilter = TypedEventFilter<WithdrawFundEvent>;
 
 export interface AINFT extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -328,13 +482,45 @@ export interface AINFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getAuctionContractAddress(overrides?: CallOverrides): Promise<[string]>;
+
     getLatestPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getLimitedTokenCounter(overrides?: CallOverrides): Promise<[number]>;
+
+    getMaximumLimitedTokenSupply(overrides?: CallOverrides): Promise<[number]>;
+
+    getMinimumUSDAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getPriceFeed(overrides?: CallOverrides): Promise<[string]>;
+
+    getTokenCounter(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    grantPermission(
+      _to: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    isLimitedEditionNft(
+      _tokenId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    isUserAuthorized(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    mintLimitedEditionNft(
+      _tokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     mintNft(
       _tokenURI: PromiseOrValue<string>,
@@ -354,8 +540,6 @@ export interface AINFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    s_tokenCounter(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     "safeTransferFrom(address,address,uint256)"(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -374,6 +558,11 @@ export interface AINFT extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setAuctionContract(
+      _auctionAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -427,13 +616,45 @@ export interface AINFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getAuctionContractAddress(overrides?: CallOverrides): Promise<string>;
+
   getLatestPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getLimitedTokenCounter(overrides?: CallOverrides): Promise<number>;
+
+  getMaximumLimitedTokenSupply(overrides?: CallOverrides): Promise<number>;
+
+  getMinimumUSDAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getPriceFeed(overrides?: CallOverrides): Promise<string>;
+
+  getTokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+  grantPermission(
+    _to: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   isApprovedForAll(
     owner: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  isLimitedEditionNft(
+    _tokenId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  isUserAuthorized(
+    _user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  mintLimitedEditionNft(
+    _tokenURI: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   mintNft(
     _tokenURI: PromiseOrValue<string>,
@@ -453,8 +674,6 @@ export interface AINFT extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  s_tokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
-
   "safeTransferFrom(address,address,uint256)"(
     from: PromiseOrValue<string>,
     to: PromiseOrValue<string>,
@@ -473,6 +692,11 @@ export interface AINFT extends BaseContract {
   setApprovalForAll(
     operator: PromiseOrValue<string>,
     approved: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setAuctionContract(
+    _auctionAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -526,13 +750,45 @@ export interface AINFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getAuctionContractAddress(overrides?: CallOverrides): Promise<string>;
+
     getLatestPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getLimitedTokenCounter(overrides?: CallOverrides): Promise<number>;
+
+    getMaximumLimitedTokenSupply(overrides?: CallOverrides): Promise<number>;
+
+    getMinimumUSDAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getPriceFeed(overrides?: CallOverrides): Promise<string>;
+
+    getTokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    grantPermission(
+      _to: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    isLimitedEditionNft(
+      _tokenId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    isUserAuthorized(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    mintLimitedEditionNft(
+      _tokenURI: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     mintNft(
       _tokenURI: PromiseOrValue<string>,
@@ -549,8 +805,6 @@ export interface AINFT extends BaseContract {
     ): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    s_tokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: PromiseOrValue<string>,
@@ -570,6 +824,11 @@ export interface AINFT extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setAuctionContract(
+      _auctionAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -623,6 +882,33 @@ export interface AINFT extends BaseContract {
       approved?: null
     ): ApprovalForAllEventFilter;
 
+    "GrantedPermission(address,address)"(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): GrantedPermissionEventFilter;
+    GrantedPermission(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): GrantedPermissionEventFilter;
+
+    "MintedNewLimitedNFT(address,uint256)"(
+      user?: PromiseOrValue<string> | null,
+      tokenId?: PromiseOrValue<BigNumberish> | null
+    ): MintedNewLimitedNFTEventFilter;
+    MintedNewLimitedNFT(
+      user?: PromiseOrValue<string> | null,
+      tokenId?: PromiseOrValue<BigNumberish> | null
+    ): MintedNewLimitedNFTEventFilter;
+
+    "MintedNewNFT(address,uint256)"(
+      user?: PromiseOrValue<string> | null,
+      tokenId?: PromiseOrValue<BigNumberish> | null
+    ): MintedNewNFTEventFilter;
+    MintedNewNFT(
+      user?: PromiseOrValue<string> | null,
+      tokenId?: PromiseOrValue<BigNumberish> | null
+    ): MintedNewNFTEventFilter;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
@@ -642,6 +928,15 @@ export interface AINFT extends BaseContract {
       to?: PromiseOrValue<string> | null,
       tokenId?: PromiseOrValue<BigNumberish> | null
     ): TransferEventFilter;
+
+    "WithdrawFund(address,uint256)"(
+      owner?: PromiseOrValue<string> | null,
+      amount?: null
+    ): WithdrawFundEventFilter;
+    WithdrawFund(
+      owner?: PromiseOrValue<string> | null,
+      amount?: null
+    ): WithdrawFundEventFilter;
   };
 
   estimateGas: {
@@ -666,12 +961,44 @@ export interface AINFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getAuctionContractAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     getLatestPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getLimitedTokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMaximumLimitedTokenSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getMinimumUSDAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getPriceFeed(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
+
+    grantPermission(
+      _to: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isLimitedEditionNft(
+      _tokenId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isUserAuthorized(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    mintLimitedEditionNft(
+      _tokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     mintNft(
@@ -692,8 +1019,6 @@ export interface AINFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    s_tokenCounter(overrides?: CallOverrides): Promise<BigNumber>;
-
     "safeTransferFrom(address,address,uint256)"(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -712,6 +1037,11 @@ export interface AINFT extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setAuctionContract(
+      _auctionAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -766,12 +1096,52 @@ export interface AINFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getAuctionContractAddress(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getLatestPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getLimitedTokenCounter(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getMaximumLimitedTokenSupply(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getMinimumUSDAmount(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPriceFeed(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getTokenCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    grantPermission(
+      _to: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isLimitedEditionNft(
+      _tokenId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isUserAuthorized(
+      _user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    mintLimitedEditionNft(
+      _tokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     mintNft(
@@ -792,8 +1162,6 @@ export interface AINFT extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    s_tokenCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     "safeTransferFrom(address,address,uint256)"(
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -812,6 +1180,11 @@ export interface AINFT extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setAuctionContract(
+      _auctionAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

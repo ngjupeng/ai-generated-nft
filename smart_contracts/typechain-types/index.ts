@@ -34,3 +34,7 @@ export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
 export type { AINFT } from "./contracts/AINFT";
 export { AINFT__factory } from "./factories/contracts/AINFT__factory";
+export type { NFTAuction } from "./contracts/NFTAuction";
+export { NFTAuction__factory } from "./factories/contracts/NFTAuction__factory";
+export type { NFTMarketplace } from "./contracts/NFTMarketplace";
+export { NFTMarketplace__factory } from "./factories/contracts/NFTMarketplace__factory";

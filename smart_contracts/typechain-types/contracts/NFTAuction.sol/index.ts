@@ -3,4 +3,3 @@
 /* eslint-disable */
 export type { AINFT } from "./AINFT";
 export type { NFTAuction } from "./NFTAuction";
-export type { NFTMarketplace } from "./NFTMarketplace";

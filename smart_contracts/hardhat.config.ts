@@ -20,6 +20,7 @@ const config: HardhatUserConfig = {
             },
         ],
     },
+    paths: ["./node_modules/@openzeppelin/contracts"],
     networks: {
         hardhat: {
             chainId: 31337,

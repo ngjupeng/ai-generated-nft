@@ -1,13 +1,3 @@
-# Sample Hardhat Project
+# AI Generated NFT with auction and marketplace
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+All the user can vote on the NFT for the design etc, for limited edition nft, it will be held by auctions, so only the highest value can own this, and for normal nft, everyone can mint one with just some fee, and at the end, they can buy/sell the nft

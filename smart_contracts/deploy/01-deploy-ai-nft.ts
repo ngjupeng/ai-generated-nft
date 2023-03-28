@@ -32,7 +32,7 @@ const deployAINFT: DeployFunction = async function (
     } else {
         mockV3Aggregator = networkConfig[chainId!]["ethUsdPriceFeed"]!
     }
-    const args: any[] = [NFT_NAME, NFT_SYMBOL, mockV3Aggregator]
+    const args: any[] = [NFT_NAME, NFT_SYMBOL, mockV3Aggregator, 10]
     const ainft = await deploy("AINFT", {
         from: deployer,
         args: args,
