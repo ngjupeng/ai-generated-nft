@@ -4,10 +4,12 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -26,43 +28,205 @@ import type {
   PromiseOrValue,
 } from "../common";
 
+export declare namespace NFTAuction {
+  export type AuctionStruct = {
+    startTimestamp: PromiseOrValue<BigNumberish>;
+    endTimestamp: PromiseOrValue<BigNumberish>;
+    tokenId: PromiseOrValue<BigNumberish>;
+    highestBidder: PromiseOrValue<string>;
+    highestBidAmount: PromiseOrValue<BigNumberish>;
+  };
+
+  export type AuctionStructOutput = [
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string,
+    BigNumber
+  ] & {
+    startTimestamp: BigNumber;
+    endTimestamp: BigNumber;
+    tokenId: BigNumber;
+    highestBidder: string;
+    highestBidAmount: BigNumber;
+  };
+}
+
 export interface NFTAuctionInterface extends utils.Interface {
   functions: {
+    "bidOnNft()": FunctionFragment;
+    "endAuction()": FunctionFragment;
+    "getAuctionDuration()": FunctionFragment;
+    "getAuctionState()": FunctionFragment;
+    "getBidderRefundAmount(address)": FunctionFragment;
+    "getCurrentAuction()": FunctionFragment;
+    "getNftContract()": FunctionFragment;
+    "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "startAuction(string)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "withdraw()": FunctionFragment;
+    "withdrawBid()": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "owner" | "renounceOwnership" | "transferOwnership"
+    nameOrSignatureOrTopic:
+      | "bidOnNft"
+      | "endAuction"
+      | "getAuctionDuration"
+      | "getAuctionState"
+      | "getBidderRefundAmount"
+      | "getCurrentAuction"
+      | "getNftContract"
+      | "onERC721Received"
+      | "owner"
+      | "renounceOwnership"
+      | "startAuction"
+      | "transferOwnership"
+      | "withdraw"
+      | "withdrawBid"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "bidOnNft", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "endAuction",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAuctionDuration",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAuctionState",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getBidderRefundAmount",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCurrentAuction",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getNftContract",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "onERC721Received",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "startAuction",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "withdrawBid",
+    values?: undefined
+  ): string;
 
+  decodeFunctionResult(functionFragment: "bidOnNft", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "endAuction", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAuctionDuration",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAuctionState",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getBidderRefundAmount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCurrentAuction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getNftContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "onERC721Received",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "startAuction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawBid",
     data: BytesLike
   ): Result;
 
   events: {
+    "AuctionEnd()": EventFragment;
+    "NewAuctionStart(tuple)": EventFragment;
+    "NewHighestBidder(address,address,tuple,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AuctionEnd"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewAuctionStart"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewHighestBidder"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export interface AuctionEndEventObject {}
+export type AuctionEndEvent = TypedEvent<[], AuctionEndEventObject>;
+
+export type AuctionEndEventFilter = TypedEventFilter<AuctionEndEvent>;
+
+export interface NewAuctionStartEventObject {
+  newAuction: NFTAuction.AuctionStructOutput;
+}
+export type NewAuctionStartEvent = TypedEvent<
+  [NFTAuction.AuctionStructOutput],
+  NewAuctionStartEventObject
+>;
+
+export type NewAuctionStartEventFilter = TypedEventFilter<NewAuctionStartEvent>;
+
+export interface NewHighestBidderEventObject {
+  bidder: string;
+  previousBidder: string;
+  auction: NFTAuction.AuctionStructOutput;
+  amount: BigNumber;
+}
+export type NewHighestBidderEvent = TypedEvent<
+  [string, string, NFTAuction.AuctionStructOutput, BigNumber],
+  NewHighestBidderEventObject
+>;
+
+export type NewHighestBidderEventFilter =
+  TypedEventFilter<NewHighestBidderEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -103,9 +267,45 @@ export interface NFTAuction extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    bidOnNft(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    endAuction(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    getAuctionDuration(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getAuctionState(overrides?: CallOverrides): Promise<[number]>;
+
+    getBidderRefundAmount(
+      _bidder: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getCurrentAuction(
+      overrides?: CallOverrides
+    ): Promise<[NFTAuction.AuctionStructOutput]>;
+
+    getNftContract(overrides?: CallOverrides): Promise<[string]>;
+
+    onERC721Received(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      tokenId: PromiseOrValue<BigNumberish>,
+      arg3: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    startAuction(
+      _tokenUri: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -113,11 +313,55 @@ export interface NFTAuction extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    withdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    withdrawBid(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
+
+  bidOnNft(
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  endAuction(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  getAuctionDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getAuctionState(overrides?: CallOverrides): Promise<number>;
+
+  getBidderRefundAmount(
+    _bidder: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getCurrentAuction(
+    overrides?: CallOverrides
+  ): Promise<NFTAuction.AuctionStructOutput>;
+
+  getNftContract(overrides?: CallOverrides): Promise<string>;
+
+  onERC721Received(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<string>,
+    tokenId: PromiseOrValue<BigNumberish>,
+    arg3: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  startAuction(
+    _tokenUri: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -126,18 +370,81 @@ export interface NFTAuction extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  withdraw(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawBid(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    bidOnNft(overrides?: CallOverrides): Promise<void>;
+
+    endAuction(overrides?: CallOverrides): Promise<void>;
+
+    getAuctionDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getAuctionState(overrides?: CallOverrides): Promise<number>;
+
+    getBidderRefundAmount(
+      _bidder: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getCurrentAuction(
+      overrides?: CallOverrides
+    ): Promise<NFTAuction.AuctionStructOutput>;
+
+    getNftContract(overrides?: CallOverrides): Promise<string>;
+
+    onERC721Received(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      tokenId: PromiseOrValue<BigNumberish>,
+      arg3: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    startAuction(
+      _tokenUri: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    withdraw(overrides?: CallOverrides): Promise<void>;
+
+    withdrawBid(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
+    "AuctionEnd()"(): AuctionEndEventFilter;
+    AuctionEnd(): AuctionEndEventFilter;
+
+    "NewAuctionStart(tuple)"(newAuction?: null): NewAuctionStartEventFilter;
+    NewAuctionStart(newAuction?: null): NewAuctionStartEventFilter;
+
+    "NewHighestBidder(address,address,tuple,uint256)"(
+      bidder?: PromiseOrValue<string> | null,
+      previousBidder?: PromiseOrValue<string> | null,
+      auction?: null,
+      amount?: null
+    ): NewHighestBidderEventFilter;
+    NewHighestBidder(
+      bidder?: PromiseOrValue<string> | null,
+      previousBidder?: PromiseOrValue<string> | null,
+      auction?: null,
+      amount?: null
+    ): NewHighestBidderEventFilter;
+
     "OwnershipTransferred(address,address)"(
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
@@ -149,27 +456,113 @@ export interface NFTAuction extends BaseContract {
   };
 
   estimateGas: {
+    bidOnNft(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    endAuction(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    getAuctionDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getAuctionState(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getBidderRefundAmount(
+      _bidder: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getCurrentAuction(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getNftContract(overrides?: CallOverrides): Promise<BigNumber>;
+
+    onERC721Received(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      tokenId: PromiseOrValue<BigNumberish>,
+      arg3: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    startAuction(
+      _tokenUri: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawBid(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    bidOnNft(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    endAuction(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAuctionDuration(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getAuctionState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getBidderRefundAmount(
+      _bidder: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getCurrentAuction(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getNftContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    onERC721Received(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      tokenId: PromiseOrValue<BigNumberish>,
+      arg3: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    startAuction(
+      _tokenUri: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     transferOwnership(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdraw(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawBid(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

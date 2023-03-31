@@ -788,7 +788,7 @@ export interface AINFT extends BaseContract {
     mintLimitedEditionNft(
       _tokenURI: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
 
     mintNft(
       _tokenURI: PromiseOrValue<string>,

@@ -54,6 +54,8 @@ contract AINFT is ERC721URIStorage, Ownable {
         s_isAuthorized[msg.sender] = true;
     }
 
+    receive() external payable {}
+
     /// @notice Mint a NFT with a minimum of i_minimumUSDAmount dollar
     /// @dev Store the NFT tokenID according to the caller
     /// @param _tokenURI the token URI that contain the pointer to the AI generated image and also metadata
@@ -74,6 +76,7 @@ contract AINFT is ERC721URIStorage, Ownable {
     function mintLimitedEditionNft(string calldata _tokenURI)
         public
         onlyAuthorized
+        returns (uint256)
     {
         s_limitedTokenCounter++;
         if (s_limitedTokenCounter > MAX_LIMITED_TOKEN_SUPPLY) {
@@ -84,6 +87,7 @@ contract AINFT is ERC721URIStorage, Ownable {
         _safeMint(s_auctionAddress, s_tokenCounter);
         _setTokenURI(s_tokenCounter, _tokenURI);
         emit MintedNewLimitedNFT(s_auctionAddress, s_tokenCounter);
+        return s_tokenCounter;
     }
 
     /// @notice Allow the contract owner to withdraw the money make by the contract
@@ -115,6 +119,7 @@ contract AINFT is ERC721URIStorage, Ownable {
             revert AINFT__InvalidAddress();
         }
         s_auctionAddress = _auctionAddress;
+        s_isAuthorized[s_auctionAddress] = true;
     }
 
     /// @notice Read the price of ETH in USD

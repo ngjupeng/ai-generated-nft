@@ -113,7 +113,7 @@ const NFT_SYMBOL = "AIT"
                   const tx = await ainft.mintLimitedEditionNft(
                       "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo"
                   )
-                  await tx.wait()
+                  const txReceipt = await tx.wait()
                   const tokenCounter = await ainft.getTokenCounter()
                   const limitedTokenCounter =
                       await ainft.getLimitedTokenCounter()
@@ -124,6 +124,13 @@ const NFT_SYMBOL = "AIT"
                   assert.equal(tokenCounter.toString(), "1")
                   assert.equal(limitedTokenCounter.toString(), "1")
                   assert.equal(isLimitedToken.toString(), "true")
+              })
+              it("it should return the limited token counter correctly", async () => {
+                  const limitedTokenCounter =
+                      await ainft.callStatic.mintLimitedEditionNft(
+                          "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo"
+                      )
+                  assert.equal(limitedTokenCounter.toString(), "1")
               })
               it("the limited edition nft owner should be auction contract", async () => {
                   const tx = await ainft.mintLimitedEditionNft(
