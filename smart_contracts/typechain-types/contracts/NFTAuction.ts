@@ -187,7 +187,7 @@ export interface NFTAuctionInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "AuctionEnd()": EventFragment;
+    "AuctionEnd(address,uint256,uint256)": EventFragment;
     "NewAuctionStart(tuple)": EventFragment;
     "NewHighestBidder(address,address,tuple,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
@@ -199,8 +199,15 @@ export interface NFTAuctionInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
-export interface AuctionEndEventObject {}
-export type AuctionEndEvent = TypedEvent<[], AuctionEndEventObject>;
+export interface AuctionEndEventObject {
+  winner: string;
+  tokenId: BigNumber;
+  amounBid: BigNumber;
+}
+export type AuctionEndEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  AuctionEndEventObject
+>;
 
 export type AuctionEndEventFilter = TypedEventFilter<AuctionEndEvent>;
 
@@ -426,8 +433,16 @@ export interface NFTAuction extends BaseContract {
   };
 
   filters: {
-    "AuctionEnd()"(): AuctionEndEventFilter;
-    AuctionEnd(): AuctionEndEventFilter;
+    "AuctionEnd(address,uint256,uint256)"(
+      winner?: PromiseOrValue<string> | null,
+      tokenId?: PromiseOrValue<BigNumberish> | null,
+      amounBid?: null
+    ): AuctionEndEventFilter;
+    AuctionEnd(
+      winner?: PromiseOrValue<string> | null,
+      tokenId?: PromiseOrValue<BigNumberish> | null,
+      amounBid?: null
+    ): AuctionEndEventFilter;
 
     "NewAuctionStart(tuple)"(newAuction?: null): NewAuctionStartEventFilter;
     NewAuctionStart(newAuction?: null): NewAuctionStartEventFilter;

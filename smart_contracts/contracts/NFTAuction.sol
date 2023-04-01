@@ -40,11 +40,18 @@ contract NFTAuction is Ownable, IERC721Receiver {
         Auction auction,
         uint256 amount
     );
-    event AuctionEnd();
+    event AuctionEnd(
+        address indexed winner,
+        uint256 indexed tokenId,
+        uint256 amounBid
+    );
 
     error NFTAuction__AuctionIsRunning();
     error NFTAuction__AuctionIsClosed();
     error NFTAuction__NotERC721Calling();
+    error NFTAuction__OwnerWithdrawFundFailed();
+    error NFTAuction__BidderWithdrawFundFailed();
+    error NFTAuction__InsufficientBidFundToWithdraw();
 
     modifier onlyFromERC721Contract() {
         if (msg.sender != address(i_nftContract)) {
@@ -82,7 +89,7 @@ contract NFTAuction is Ownable, IERC721Receiver {
             startTimestamp: block.timestamp,
             endTimestamp: block.timestamp + AUCTION_DURATION,
             tokenId: tokenId,
-            highestBidder: address(0),
+            highestBidder: owner(),
             highestBidAmount: 0.01 ether
         });
         s_auctions.push(newAuction);
@@ -123,13 +130,53 @@ contract NFTAuction is Ownable, IERC721Receiver {
 
     /// @notice This will end the current running auction
     /// @dev This will be keep check by the chainlink keeper to check when to end the auction
-    function endAuction() public {}
+    function endAuction() public {
+        Auction memory currentAuction = getCurrentAuction();
+        if (s_currentState != AuctionState.RUNNING) {
+            revert NFTAuction__AuctionIsClosed();
+        }
+        if (block.timestamp < currentAuction.endTimestamp) {
+            revert NFTAuction__AuctionIsRunning();
+        }
+
+        s_currentState = AuctionState.CLOSED;
+
+        // transfer the nft to the winner
+        i_nftContract.safeTransferFrom(
+            address(this),
+            currentAuction.highestBidder,
+            currentAuction.tokenId
+        );
+
+        emit AuctionEnd(
+            currentAuction.highestBidder,
+            currentAuction.tokenId,
+            currentAuction.highestBidAmount
+        );
+    }
 
     /// @notice Bidder can take back their fund if lose in the bid
-    function withdrawBid() public {}
+    function withdrawBid() public {
+        uint256 bidderWithdrawFund = s_bidderRefund[msg.sender];
+        if (bidderWithdrawFund <= 0) {
+            revert NFTAuction__InsufficientBidFundToWithdraw();
+        }
+        delete (s_bidderRefund[msg.sender]);
+
+        (bool success, ) = msg.sender.call{value: bidderWithdrawFund}("");
+
+        if (!success) {
+            revert NFTAuction__BidderWithdrawFundFailed();
+        }
+    }
 
     /// @notice This allow the owner of the auction contract to take out the earned fund from auctions
-    function withdraw() public onlyOwner {}
+    function withdraw() public onlyOwner {
+        (bool success, ) = owner().call{value: address(this).balance}("");
+        if (!success) {
+            revert NFTAuction__OwnerWithdrawFundFailed();
+        }
+    }
 
     /// @notice Get the current running auction that contains the starting/ending time, current highest bidder and amount
     function getCurrentAuction() public view returns (Auction memory) {

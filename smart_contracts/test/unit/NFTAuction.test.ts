@@ -9,6 +9,7 @@ import { NFTAuction, AINFT } from "../../typechain-types"
     : describe("NFTAuction Unit Test", function () {
           let deployer: SignerWithAddress
           let player: SignerWithAddress
+          let player1: SignerWithAddress
           let accounts: SignerWithAddress[]
           let nftAuction: NFTAuction
           let aifnt: AINFT
@@ -18,6 +19,7 @@ import { NFTAuction, AINFT } from "../../typechain-types"
               accounts = await ethers.getSigners()
               deployer = accounts[0]
               player = accounts[1]
+              player1 = accounts[2]
               nftAuction = await ethers.getContract("NFTAuction")
               aifnt = await ethers.getContract("AINFT")
           })
@@ -76,10 +78,7 @@ import { NFTAuction, AINFT } from "../../typechain-types"
                   )
                   assert.equal(auctionEndingTimestamp, endTimestamp.toNumber())
                   assert.equal(tokenId.toString(), "1")
-                  assert.equal(
-                      highestBidder.toString(),
-                      "0x0000000000000000000000000000000000000000"
-                  )
+                  assert.equal(highestBidder.toString(), deployer.address)
                   assert.equal(
                       highestBidAmount.toString(),
                       ethers.utils.parseEther("0.01").toString()
@@ -209,7 +208,10 @@ import { NFTAuction, AINFT } from "../../typechain-types"
 
                       assert.equal(highestBidder, player.address)
                       assert.equal(highestBidAmount.toString(), largerBidAmount)
-                      assert.equal(refundAmountDeployer.toString(), bidAmount)
+                      assert.equal(
+                          refundAmountDeployer.toString(),
+                          ethers.utils.parseEther("0.51").toString()
+                      )
                       assert.equal(refundAmountPlayer.toString(), "0")
                   })
 
@@ -234,6 +236,292 @@ import { NFTAuction, AINFT } from "../../typechain-types"
                       assert.equal(
                           playerRefundAmount.toString(),
                           lowerBidAmount.toString()
+                      )
+                  })
+              })
+          })
+
+          describe("withdraw", function () {
+              beforeEach(async () => {
+                  await aifnt.setAuctionContract(nftAuction.address)
+              })
+              it("owner should be able to withdraw the earned funds", async () => {
+                  const txStartAuction = await nftAuction
+                      .connect(deployer)
+                      .startAuction(
+                          "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo"
+                      )
+                  await txStartAuction.wait()
+
+                  const bidAmount = ethers.utils.parseEther("0.5")
+
+                  const bidTx = await nftAuction
+                      .connect(player)
+                      .bidOnNft({ value: bidAmount })
+                  await bidTx.wait()
+
+                  const beforeWithdrawOwnerAmount =
+                      await nftAuction.provider.getBalance(deployer.address)
+
+                  const withdrawTx = await nftAuction.withdraw()
+                  const { gasUsed, effectiveGasPrice } = await withdrawTx.wait()
+
+                  const afterWithdrawOwnerAmount =
+                      await nftAuction.provider.getBalance(deployer.address)
+                  const gasUsedInTx = gasUsed.mul(effectiveGasPrice)
+
+                  assert.equal(
+                      beforeWithdrawOwnerAmount.add(bidAmount).toString(),
+                      afterWithdrawOwnerAmount.add(gasUsedInTx).toString()
+                  )
+              })
+              it("should revert if not owner withdrawing", async () => {
+                  const txStartAuction = await nftAuction
+                      .connect(deployer)
+                      .startAuction(
+                          "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo"
+                      )
+                  await txStartAuction.wait()
+
+                  const bidAmount = ethers.utils.parseEther("0.5")
+
+                  const bidTx = await nftAuction
+                      .connect(player)
+                      .bidOnNft({ value: bidAmount })
+                  await bidTx.wait()
+
+                  expect(
+                      nftAuction.connect(player).withdraw()
+                  ).to.be.revertedWith("Ownable: caller is not the owner")
+              })
+          })
+
+          describe("withdrawBid", function () {
+              beforeEach(async () => {
+                  await aifnt.setAuctionContract(nftAuction.address)
+                  const txStartAuction = await nftAuction
+                      .connect(deployer)
+                      .startAuction(
+                          "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo"
+                      )
+                  await txStartAuction.wait()
+              })
+              it("should revert if the highest bidder trying to withdraw bid", async () => {
+                  const bidAmount = ethers.utils.parseEther("0.5")
+                  const bidTx = await nftAuction
+                      .connect(player)
+                      .bidOnNft({ value: bidAmount })
+                  await bidTx.wait()
+
+                  expect(
+                      nftAuction.withdrawBid()
+                  ).to.be.revertedWithCustomError(
+                      nftAuction,
+                      "NFTAuction__InsufficientBidFundToWithdraw"
+                  )
+              })
+              it("should withdraw successfully if the highest bidder beated by other bidder", async () => {
+                  const playerAmountBefore =
+                      await nftAuction.provider.getBalance(player1.address)
+                  let bidAmount = ethers.utils.parseEther("0.5")
+                  let bidTx = await nftAuction
+                      .connect(player1)
+                      .bidOnNft({ value: bidAmount })
+                  const {
+                      gasUsed: gasUsedOnBid,
+                      effectiveGasPrice: effectiveGasPriceOnBid,
+                  } = await bidTx.wait()
+
+                  bidAmount = ethers.utils.parseEther("1")
+                  bidTx = await nftAuction
+                      .connect(player)
+                      .bidOnNft({ value: bidAmount })
+                  await bidTx.wait()
+
+                  const refundAmount = await nftAuction.getBidderRefundAmount(
+                      player1.address
+                  )
+
+                  const withdrawBidTx = await nftAuction
+                      .connect(player1)
+                      .withdrawBid()
+                  const { gasUsed, effectiveGasPrice } =
+                      await withdrawBidTx.wait()
+                  const playerAmountAfter =
+                      await nftAuction.provider.getBalance(player1.address)
+
+                  assert.equal(
+                      playerAmountBefore.toString(),
+                      playerAmountAfter
+                          .add(gasUsed.mul(effectiveGasPrice))
+                          .add(gasUsedOnBid.mul(effectiveGasPriceOnBid))
+                          .toString()
+                  )
+                  assert.equal(
+                      refundAmount.toString(),
+                      ethers.utils.parseEther("0.5").toString()
+                  )
+              })
+              it("should reset the bidder refund amount after the bidder withdrew", async () => {
+                  let bidAmount = ethers.utils.parseEther("0.5")
+                  let bidTx = await nftAuction
+                      .connect(player1)
+                      .bidOnNft({ value: bidAmount })
+                  await bidTx.wait()
+
+                  bidAmount = ethers.utils.parseEther("1")
+                  bidTx = await nftAuction
+                      .connect(player)
+                      .bidOnNft({ value: bidAmount })
+                  await bidTx.wait()
+
+                  const withdrawBidTx = await nftAuction
+                      .connect(player1)
+                      .withdrawBid()
+                  await withdrawBidTx.wait()
+
+                  const player1AvailableWithdrawFund =
+                      await nftAuction.getBidderRefundAmount(player1.address)
+
+                  assert.equal(player1AvailableWithdrawFund.toString(), "0")
+              })
+          })
+
+          describe("endAuction", function () {
+              describe("have auction running", function () {
+                  beforeEach(async () => {
+                      await aifnt.setAuctionContract(nftAuction.address)
+                      const txStartAuction = await nftAuction
+                          .connect(deployer)
+                          .startAuction(
+                              "ipfs://QmaVkBn2tKmjbhphU7eyztbvSQU5EXDdqRyXZtRhSGgJGo"
+                          )
+                      await txStartAuction.wait()
+                  })
+
+                  it("should revert if the auction is still running", async () => {
+                      expect(
+                          nftAuction.endAuction()
+                      ).to.be.revertedWithCustomError(
+                          nftAuction,
+                          "NFTAuction__AuctionIsRunning"
+                      )
+                  })
+                  it("should successfully transfer the limited edition nft to the highest bidder", async () => {
+                      const bidAmount = ethers.utils
+                          .parseEther("0.5")
+                          .toString()
+
+                      let tx = await nftAuction.connect(player).bidOnNft({
+                          value: bidAmount,
+                      })
+                      await tx.wait()
+
+                      // 5 days after
+                      await network.provider.send("evm_increaseTime", [
+                          60 * 60 * 24 * 5,
+                      ])
+                      await network.provider.send("evm_mine")
+
+                      const endAuctionTx = await nftAuction.endAuction()
+                      await endAuctionTx.wait()
+
+                      const { tokenId } = await nftAuction.getCurrentAuction()
+                      const ownerOfAuctionNft = await aifnt.ownerOf(tokenId)
+
+                      const isLimitedEditionNFT =
+                          await aifnt.isLimitedEditionNft(tokenId)
+
+                      assert.equal(ownerOfAuctionNft, player.address)
+                      assert.equal(isLimitedEditionNFT, true)
+                  })
+                  it("should emit an event when the auction ends", async () => {
+                      const bidAmount = ethers.utils
+                          .parseEther("0.5")
+                          .toString()
+
+                      let tx = await nftAuction.connect(player).bidOnNft({
+                          value: bidAmount,
+                      })
+                      await tx.wait()
+
+                      // 5 days after
+                      await network.provider.send("evm_increaseTime", [
+                          60 * 60 * 24 * 5,
+                      ])
+                      await network.provider.send("evm_mine")
+
+                      expect(nftAuction.endAuction()).to.emit(
+                          nftAuction,
+                          "AuctionEnd"
+                      )
+                  })
+                  it("the auction state must become closed", async () => {
+                      const bidAmount = ethers.utils
+                          .parseEther("0.5")
+                          .toString()
+
+                      let tx = await nftAuction.connect(player).bidOnNft({
+                          value: bidAmount,
+                      })
+                      await tx.wait()
+
+                      // 5 days after
+                      await network.provider.send("evm_increaseTime", [
+                          60 * 60 * 24 * 5,
+                      ])
+                      await network.provider.send("evm_mine")
+
+                      const endAuctionTx = await nftAuction.endAuction()
+                      await endAuctionTx.wait()
+
+                      const auctionState = await nftAuction.getAuctionState()
+
+                      assert.equal(auctionState, 0)
+                  })
+                  it(" all the other auction related functions should not be callable when the auction state is closed", async () => {
+                      const bidAmount = ethers.utils
+                          .parseEther("0.5")
+                          .toString()
+
+                      let tx = await nftAuction.connect(player).bidOnNft({
+                          value: bidAmount,
+                      })
+                      await tx.wait()
+
+                      // 5 days after
+                      await network.provider.send("evm_increaseTime", [
+                          60 * 60 * 24 * 5,
+                      ])
+                      await network.provider.send("evm_mine")
+
+                      const endAuctionTx = await nftAuction.endAuction()
+                      await endAuctionTx.wait()
+
+                      expect(
+                          nftAuction.endAuction
+                      ).to.be.revertedWithCustomError(
+                          nftAuction,
+                          "NFTAuction__AuctionIsClosed"
+                      )
+                      expect(
+                          nftAuction.bidOnNft({
+                              value: ethers.utils.parseEther("0.1"),
+                          })
+                      ).to.be.revertedWithCustomError(
+                          nftAuction,
+                          "NFTAuction__AuctionIsClosed"
+                      )
+                  })
+              })
+              describe("no auction running", function () {
+                  it("should revert if no auction running", async () => {
+                      await aifnt.setAuctionContract(nftAuction.address)
+                      expect(
+                          nftAuction.endAuction()
+                      ).to.be.revertedWithCustomError(
+                          nftAuction,
+                          "NFTAuction__AuctionIsClosed"
                       )
                   })
               })
