@@ -44,7 +44,7 @@ const deployAINFT: DeployFunction = async function (
         !developmentChains.includes(chainName) &&
         process.env.ETHERSCAN_API_KEY
     ) {
-        verify(ainft.address, args)
+        await verify(ainft.address, args)
     }
 }
 

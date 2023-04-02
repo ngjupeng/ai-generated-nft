@@ -4,7 +4,7 @@ import { developmentChains, networkConfig } from "../helper-hardhat-config"
 import { verify } from "../helper-functions"
 import { ethers } from "hardhat"
 
-const deployNFTAuction: DeployFunction = async function (
+const deployNFTMarketplace: DeployFunction = async function (
     hre: HardhatRuntimeEnvironment
 ) {
     const { deployments, getNamedAccounts, network } = hre
@@ -15,11 +15,8 @@ const deployNFTAuction: DeployFunction = async function (
 
     const waitBlockConfirmation = networkConfig[chainId!]["blockConfirmations"]
 
-    // get nft contract
-    const ainft = await ethers.getContract("AINFT")
-
-    const args: any[] = [ainft.address]
-    const nftAuction = await deploy("NFTAuction", {
+    const args: any[] = []
+    const nftMarketplace = await deploy("NFTMarketplace", {
         from: deployer,
         args: args,
         log: true,
@@ -30,9 +27,9 @@ const deployNFTAuction: DeployFunction = async function (
         !developmentChains.includes(chainName) &&
         process.env.ETHERSCAN_API_KEY
     ) {
-        await verify(nftAuction.address, args)
+        await verify(nftMarketplace.address, args)
     }
 }
 
-export default deployNFTAuction
-deployNFTAuction.tags = ["all", "nftauction"]
+export default deployNFTMarketplace
+deployNFTMarketplace.tags = ["all", "nftmarketplace"]

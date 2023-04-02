@@ -65,6 +65,14 @@ contract NFTAuction is Ownable, IERC721Receiver {
         s_currentState = AuctionState.CLOSED;
     }
 
+    receive() external payable {
+        bidOnNft();
+    }
+
+    fallback() external payable {
+        bidOnNft();
+    }
+
     /// @notice Only the contract owner can start a new auction
     /// @dev This will be automatically call by a script every x days
     /// @param _tokenUri ipfs metadata link
