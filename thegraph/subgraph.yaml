@@ -1,0 +1,105 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AINFT
+    network: goerli
+    source:
+      address: "0x98094A46109c121787A4164A3c6f751acd57C927"
+      abi: AINFT
+      startBlock: 8759400
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - GrantedPermission
+        - MintedNewLimitedNFT
+        - MintedNewNFT
+        - OwnershipTransferred
+        - Transfer
+        - WithdrawFund
+      abis:
+        - name: AINFT
+          file: ./abis/AINFT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: GrantedPermission(indexed address,indexed address)
+          handler: handleGrantedPermission
+        - event: MintedNewLimitedNFT(indexed address,indexed uint256)
+          handler: handleMintedNewLimitedNFT
+        - event: MintedNewNFT(indexed address,indexed uint256)
+          handler: handleMintedNewNFT
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: WithdrawFund(indexed address,uint256)
+          handler: handleWithdrawFund
+      file: ./src/ainft.ts
+  - kind: ethereum
+    name: NFTAuction
+    network: goerli
+    source:
+      address: "0xC2Ce3A9CB4f252dEA2BFC7Fa25758949d5807A64"
+      abi: NFTAuction
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AuctionEnd
+        - NewAuctionStart
+        - NewHighestBidder
+        - NFTAuctionOwnershipTransferred
+      abis:
+        - name: NFTAuction
+          file: ./abis/NFTAuction.json
+      eventHandlers:
+        - event: AuctionEnd(indexed address,indexed uint256,uint256)
+          handler: handleAuctionEnd
+        - event: NewAuctionStart((uint256,uint256,uint256,address,uint256))
+          handler: handleNewAuctionStart
+        - event: NewHighestBidder(indexed address,indexed
+            address,(uint256,uint256,uint256,address,uint256),uint256)
+          handler: handleNewHighestBidder
+        - event: NFTAuctionOwnershipTransferred(indexed address,indexed address)
+          handler: handleNFTAuctionOwnershipTransferred
+      file: ./src/nft-auction.ts
+  - kind: ethereum
+    name: NFTMarketplace
+    network: goerli
+    source:
+      address: "0x2F04f24394B3F5383D9e3bb3946009fE9545d261"
+      abi: NFTMarketplace
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CancelListing
+        - NFTSold
+        - NewNFTItemListed
+        - NFTMarketplaceOwnershipTransferred
+        - VoteOnNft
+      abis:
+        - name: NFTMarketplace
+          file: ./abis/NFTMarketplace.json
+      eventHandlers:
+        - event: CancelListing(indexed address,indexed uint256)
+          handler: handleCancelListing
+        - event: NFTSold(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleNFTSold
+        - event: NewNFTItemListed(indexed address,indexed address,indexed uint256,uint256)
+          handler: handleNewNFTItemListed
+        - event: NFTMarketplaceOwnershipTransferred(indexed address,indexed address)
+          handler: handleNFTMarketplaceOwnershipTransferred
+        - event: VoteOnNft(indexed address,indexed uint256,uint256)
+          handler: handleVoteOnNft
+      file: ./src/nft-marketplace.ts
