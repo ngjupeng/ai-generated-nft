@@ -14,34 +14,16 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - ApprovalForAll
-        - GrantedPermission
         - MintedNewLimitedNFT
         - MintedNewNFT
-        - OwnershipTransferred
-        - Transfer
-        - WithdrawFund
       abis:
         - name: AINFT
           file: ./abis/AINFT.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,indexed uint256)
-          handler: handleApproval
-        - event: ApprovalForAll(indexed address,indexed address,bool)
-          handler: handleApprovalForAll
-        - event: GrantedPermission(indexed address,indexed address)
-          handler: handleGrantedPermission
         - event: MintedNewLimitedNFT(indexed address,indexed uint256)
           handler: handleMintedNewLimitedNFT
         - event: MintedNewNFT(indexed address,indexed uint256)
           handler: handleMintedNewNFT
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-        - event: WithdrawFund(indexed address,uint256)
-          handler: handleWithdrawFund
       file: ./src/ainft.ts
   - kind: ethereum
     name: NFTAuction
@@ -49,6 +31,7 @@ dataSources:
     source:
       address: "0xC2Ce3A9CB4f252dEA2BFC7Fa25758949d5807A64"
       abi: NFTAuction
+      startBlock: 8759400
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -57,7 +40,6 @@ dataSources:
         - AuctionEnd
         - NewAuctionStart
         - NewHighestBidder
-        - NFTAuctionOwnershipTransferred
       abis:
         - name: NFTAuction
           file: ./abis/NFTAuction.json
@@ -69,8 +51,6 @@ dataSources:
         - event: NewHighestBidder(indexed address,indexed
             address,(uint256,uint256,uint256,address,uint256),uint256)
           handler: handleNewHighestBidder
-        - event: NFTAuctionOwnershipTransferred(indexed address,indexed address)
-          handler: handleNFTAuctionOwnershipTransferred
       file: ./src/nft-auction.ts
   - kind: ethereum
     name: NFTMarketplace
@@ -78,6 +58,7 @@ dataSources:
     source:
       address: "0x2F04f24394B3F5383D9e3bb3946009fE9545d261"
       abi: NFTMarketplace
+      startBlock: 8759400
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -86,7 +67,6 @@ dataSources:
         - CancelListing
         - NFTSold
         - NewNFTItemListed
-        - NFTMarketplaceOwnershipTransferred
         - VoteOnNft
       abis:
         - name: NFTMarketplace
@@ -98,8 +78,6 @@ dataSources:
           handler: handleNFTSold
         - event: NewNFTItemListed(indexed address,indexed address,indexed uint256,uint256)
           handler: handleNewNFTItemListed
-        - event: NFTMarketplaceOwnershipTransferred(indexed address,indexed address)
-          handler: handleNFTMarketplaceOwnershipTransferred
         - event: VoteOnNft(indexed address,indexed uint256,uint256)
           handler: handleVoteOnNft
       file: ./src/nft-marketplace.ts
