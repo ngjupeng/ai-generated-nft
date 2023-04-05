@@ -15,10 +15,26 @@ const useAINFTContract = () => {
     signerOrProvider: signer || provider,
   });
 
-  const mintNft = async (tokenUri: string): Promise<string> => {
-    const tx: ContractTransaction = await contract?.mintNft(tokenUri);
-    const { transactionHash } = await tx.wait();
-    return transactionHash;
+  const mintNft = async ({
+    tokenUri,
+    ethAmount,
+  }: {
+    tokenUri: string;
+    ethAmount: string;
+  }): Promise<string> => {
+    const tx: ContractTransaction = await contract?.mintNft(tokenUri, {
+      value: ethAmount,
+    });
+    try {
+      const { transactionHash } = await tx.wait();
+      return transactionHash;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getLatestPrice = async (): Promise<BigInt> => {
+    return contract?.getLatestPrice();
   };
 
   const getMinimumUSDAmount = async (): Promise<BigInt> => {
@@ -28,6 +44,7 @@ const useAINFTContract = () => {
   return {
     contract,
     mintNft,
+    getLatestPrice,
     getMinimumUSDAmount,
   };
 };

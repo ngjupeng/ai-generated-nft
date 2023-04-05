@@ -1,3 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nft-card-gradient-border {
+  background: hsla(232, 73%, 65%, 1);
+  background: linear-gradient(90deg, hsla(232, 73%, 65%, 1) 20%, hsla(279, 33%, 48%, 1) 60%);
+  background: -moz-linear-gradient(90deg, hsla(232, 73%, 65%, 1) 20%, hsla(279, 33%, 48%, 1) 60%);
+  background: -webkit-linear-gradient(90deg, hsla(232, 73%, 65%, 1) 20%, hsla(279, 33%, 48%, 1) 60%);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
