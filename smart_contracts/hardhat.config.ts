@@ -6,6 +6,8 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
+import "./task/generate-image"
+
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
 const PRIVATE_KEY = process.env.PRIVATE_KEY || ""
 const GEORLI_URL = process.env.GEORLI_URL || ""

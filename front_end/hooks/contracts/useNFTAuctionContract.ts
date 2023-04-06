@@ -15,8 +15,13 @@ const useNFTAuctionContract = () => {
     signerOrProvider: signer || provider,
   });
 
+  const getAuctionState = async (): Promise<BigInt> => {
+    return contract?.getAuctionState();
+  };
+
   return {
     contract,
+    getAuctionState,
   };
 };
 

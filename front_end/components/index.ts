@@ -5,6 +5,8 @@ import Spinner from "./Spinner";
 import SuccessAlert from "./SuccessAlert";
 import Skeleton from "./Skeleton";
 import Footer from "./Footer";
+import AuctionSkeleton from "./AuctionSkeleton";
+import RecentAuctions from "./RecentAuctions";
 
 export {
   Navbar,
@@ -14,4 +16,6 @@ export {
   SuccessAlert,
   Skeleton,
   Footer,
+  AuctionSkeleton,
+  RecentAuctions,
 };
