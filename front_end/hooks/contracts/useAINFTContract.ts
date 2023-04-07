@@ -33,6 +33,10 @@ const useAINFTContract = () => {
     }
   };
 
+  const getTokenURI = async (tokenId: number): Promise<string> => {
+    return contract?.tokenURI(tokenId);
+  };
+
   const getLatestPrice = async (): Promise<BigInt> => {
     return contract?.getLatestPrice();
   };
@@ -46,6 +50,7 @@ const useAINFTContract = () => {
     mintNft,
     getLatestPrice,
     getMinimumUSDAmount,
+    getTokenURI,
   };
 };
 

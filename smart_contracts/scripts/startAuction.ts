@@ -16,6 +16,9 @@ async function main() {
     const tx = await auction.startAuction(TOKEN_URI)
     const txReceipt = tx.wait()
     console.log((await txReceipt).transactionHash)
+
+    const currentAuction = await auction.getCurrentAuction()
+    console.log(currentAuction)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -1,3 +1,5 @@
 import useAuctionState from "./useAuctionState";
+import useCurrentAuction from "./useCurrentAuction";
+import useBidNFT from "./useBidNFT";
 
-export { useAuctionState };
+export { useAuctionState, useCurrentAuction, useBidNFT };

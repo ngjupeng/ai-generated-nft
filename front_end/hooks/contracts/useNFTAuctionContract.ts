@@ -15,13 +15,27 @@ const useNFTAuctionContract = () => {
     signerOrProvider: signer || provider,
   });
 
+  const bidOnNFT = async (bidAmount: string): Promise<string> => {
+    const tx: ContractTransaction = await contract?.bidOnNft({
+      value: bidAmount,
+    });
+    const { transactionHash } = await tx.wait();
+    return transactionHash;
+  };
+
   const getAuctionState = async (): Promise<BigInt> => {
     return contract?.getAuctionState();
+  };
+
+  const getCurrentAuction = async (): Promise<any> => {
+    return contract?.getCurrentAuction();
   };
 
   return {
     contract,
     getAuctionState,
+    getCurrentAuction,
+    bidOnNFT,
   };
 };
 

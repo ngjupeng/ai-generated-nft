@@ -21,18 +21,7 @@ import { useRecentMinters } from "@/hooks/graph/useRecentMinters";
 import { getEthAmount } from "@/utils/removeDecimals";
 import { MintHistoryType } from "@/types/TMintHistory";
 import "react-toastify/dist/ReactToastify.css";
-
-// loading component, when generating image, uploading to ipfs and waiting for user confirm on metamask this component will show
-const Loading = ({ title }: { title: string }) => {
-  return (
-    <div className="mt-5 flex items-center gap-2">
-      <div className="w-8 h-8">
-        <Spinner />
-      </div>
-      <div>{title}</div>
-    </div>
-  );
-};
+import Loading from "@/components/Loading";
 
 const Mint = () => {
   const { openConnectModal } = useConnectModal();
@@ -133,21 +122,19 @@ const Mint = () => {
       setIsRequestingImage(false);
       setIsUploadingToIPFS(true);
       // upload the base64 image to nft storage
-      const metadata = await useUploadToNFtStorage(
-        base64 as string,
-        description
-      );
+      const metadata = await useUploadToNFtStorage(data, description);
       setIpfsMetadata(metadata.ipnft);
       setTitle(description);
       setDescription("");
       setIsUploadingToIPFS(false);
       setIsWaitingPayment(true);
       // wait for the user to confirm on metamask
+      const payAmount = Number(
+        getEthAmount(10.5, latestPriceData!.toString())
+      ).toFixed(5);
       mintNFT({
         tokenUri: `https://ipfs.io/ipfs/${metadata.ipnft}/metadata.json`,
-        ethAmount: ethers.utils
-          .parseEther(getEthAmount(10.5, latestPriceData!.toString()))
-          .toString(),
+        ethAmount: ethers.utils.parseEther(payAmount.toString()).toString(),
       });
 
       // clear the success message after 20s
@@ -156,7 +143,9 @@ const Mint = () => {
       }, 20000);
     } catch (error) {
       setImageUrl("");
-      toast.error("Error when uploading to IPFS", {
+      setIsUploadingToIPFS(false);
+      setIsWaitingPayment(false);
+      toast.error("Something went wrong, please try later", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
