@@ -77,7 +77,7 @@ const Auction = () => {
   async function bid() {
     if (isConnected) {
       setIsWaiting(true);
-      await bidNFT(ethers.utils.parseEther(bidAmount.toString()).toString());
+      bidNFT(ethers.utils.parseEther(bidAmount.toString()).toString());
     }
   }
 
@@ -126,14 +126,14 @@ const Auction = () => {
         </>
       ) : (
         <div>
-          <div className="text-center">
+          <div className="mt-5 lg:mt-0 text-center">
             Auction close in{" "}
             <span className="font-bold">
               {endIn(currentAuction?.endTimestamp)}
             </span>
           </div>
           <div>
-            <div className="mt-5 flex justify-center items-center gap-x-10">
+            <div className="mt-5 flex flex-col lg:flex-row justify-center items-center gap-x-10">
               <div className="flex-[2]">
                 <div className="mb-5 flex flex-col items-center">
                   <div className="flex items-center">

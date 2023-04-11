@@ -177,20 +177,23 @@ const SellNFT = () => {
   return (
     <div className="px-10">
       <ToastContainer />
-      <div className="w-[50%] mx-auto">
+      <div className="w-[80%] lg:w-[50%] mx-auto">
         <div className="flex items-center justify-start">
           <div className="mx-auto w-full max-w-lg">
             <div className="flex items-center gap-5">
-              <h1 className="text-4xl font-medium">Sell your NFT</h1>
-
+              <h1 className="text-4xl font-medium text-center">
+                Sell your NFT
+              </h1>
               <div className="cursor-pointer group relative">
-                <Tooltip anchorSelect=".my-anchor-element" place="top">
+                <Tooltip
+                  anchorSelect=".my-anchor-element"
+                  place="top"
+                  className="text-sm max-w-[200px]"
+                >
                   <div>
-                    Please make sures you entered
-                    <br />
-                    the correct NFTS contract address
-                    <br />
-                    and token ID to prevent the risk of losing the funds.
+                    Please make sures you entered the correct NFTS contract
+                    address and token ID to prevent the risk of losing the
+                    funds.
                   </div>
                 </Tooltip>
                 <a className="my-anchor-element" data-tooltip-id="my-tooltip">
@@ -252,7 +255,7 @@ const SellNFT = () => {
                   <Loading title="Loading" />
                 </div>
               ) : (
-                <div className="flex justify-end items-center">
+                <div className="flex justify-center lg:justify-end items-center">
                   <button
                     onClick={() => {
                       handleSellOnClick();

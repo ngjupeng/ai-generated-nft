@@ -45,7 +45,10 @@ const useNFTMarketplaceContract = () => {
     const tx: ContractTransaction = await contract?.upadteNftSellingState(
       nftContractAddr,
       tokenId,
-      price
+      price,
+      {
+        gasLimit: 60000,
+      }
     );
     const { transactionHash } = await tx.wait();
     return transactionHash;
@@ -58,24 +61,36 @@ const useNFTMarketplaceContract = () => {
     nftContractAddr: string;
     tokenId: string;
   }): Promise<string> => {
-    const tx: ContractTransaction = await contract?.cancelListing(
-      nftContractAddr,
-      tokenId
-    );
-    const { transactionHash } = await tx.wait();
-    return transactionHash;
+    try {
+      const tx: ContractTransaction = await contract?.cancelListing(
+        nftContractAddr,
+        tokenId,
+        {
+          gasLimit: 60000,
+        }
+      );
+      const { transactionHash } = await tx.wait();
+      return transactionHash;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const buyNft = async ({
     nftContractAddr,
     tokenId,
+    buyAmount,
   }: {
     nftContractAddr: string;
     tokenId: string;
+    buyAmount: string;
   }): Promise<string> => {
     const tx: ContractTransaction = await contract?.buyNft(
       nftContractAddr,
-      tokenId
+      tokenId,
+      {
+        value: buyAmount,
+      }
     );
     const { transactionHash } = await tx.wait();
     return transactionHash;
@@ -90,7 +105,10 @@ const useNFTMarketplaceContract = () => {
   }): Promise<string> => {
     const tx: ContractTransaction = await contract?.voteOnNft(
       nftContractAddr,
-      tokenId
+      tokenId,
+      {
+        gasLimit: 60000,
+      }
     );
     const { transactionHash } = await tx.wait();
     return transactionHash;

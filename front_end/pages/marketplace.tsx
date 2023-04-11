@@ -51,13 +51,22 @@ const Skeleton = () => {
 const LoadingSkeleton = () => {
   return (
     <div className="w-full">
-      <div className="w-full grid grid-cols-3 gap-5">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Skeleton />
         <Skeleton />
         <Skeleton />
       </div>
     </div>
   );
+};
+
+const activeItemTest: ActiveItem = {
+  id: "dasdasdasdsadasdasdasdsa",
+  seller: "0xC8965DD608a2a1293027E42Bf63c5E180436591d",
+  tokenId: "8",
+  nftAddress: "0xC8965DD608a2a1293027E42Bf63c5E180436591d",
+  votes: "0",
+  price: "10000000000",
 };
 
 const Marketplace = () => {
@@ -81,18 +90,26 @@ const Marketplace = () => {
           )
         ) : (
           <div>
-            {!activeItems?.activeItems ? (
+            {activeItems?.activeItems ? (
               <>
                 <NoItem />
               </>
             ) : (
-              <div className="w-[90%] mx-auto grid grid-cols-4 gap-x-5 gap-y-5">
-                {activeItems?.activeItems.map((activeItem: ActiveItem) => (
+              <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-5 pb-20">
+                {/* {activeItems?.activeItems.map((activeItem: ActiveItem) => (
                   <NFTMarketCard
                     activeItem={activeItem}
                     activeItemsRefetch={activeItemsRefetch}
                   />
-                ))}
+                ))} */}
+                <NFTMarketCard
+                  activeItem={activeItemTest}
+                  activeItemsRefetch={activeItemsRefetch}
+                />
+                <NFTMarketCard
+                  activeItem={activeItemTest}
+                  activeItemsRefetch={activeItemsRefetch}
+                />
               </div>
             )}
           </div>

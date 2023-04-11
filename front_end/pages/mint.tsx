@@ -175,10 +175,10 @@ const Mint = () => {
   return (
     <div>
       <ToastContainer />
-      <div className="flex justify-center px-10">
+      <div className="flex flex-col lg:flex-row justify-center px-10">
         {/* nft card and description */}
         <div className="flex-[2] flex flex-col items-center">
-          <div className="w-[50%]">
+          <div className="w-[90%] md:w-[70%] lg:w-[50%]">
             <h2 className="font-medium text-2xl tracking-widest text-center">
               {title ? (
                 <div className="flex items-center gap-2 justify-center">
@@ -244,7 +244,7 @@ const Mint = () => {
           )}
         </div>
         {/* recent minters */}
-        <div className="flex-1">
+        <div className="mt-10 lg:mt-0 flex-1">
           <div className="w-[80%]">
             <div className="flex items-center">
               <h2 className="text-lg">Recent Mint</h2>

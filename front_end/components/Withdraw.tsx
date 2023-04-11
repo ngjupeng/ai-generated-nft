@@ -34,7 +34,7 @@ const Withdraw = ({
         <div className="flex items-center justify-start">
           <div className="mx-auto w-full max-w-lg">
             <div className="flex justify-center items-center gap-5">
-              <h1 className="text-4xl font-medium ">{title}</h1>
+              <h1 className="text-4xl font-medium text-center">{title}</h1>
             </div>
             <div className="mt-10">
               {!isConnected ? (
@@ -77,7 +77,7 @@ const Withdraw = ({
                   <Loading title="Loading" />
                 </div>
               ) : (
-                <div className="flex justify-end items-center">
+                <div className="flex justify-center lg:justify-end items-center">
                   <button
                     onClick={handleWithdraw}
                     className="mt-5 rounded-md bg-black px-10 py-2 text-white border border-1 border-gray-400"
