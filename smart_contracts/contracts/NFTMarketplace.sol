@@ -95,9 +95,7 @@ contract NFTMarketplace is Ownable {
         emit NewNFTItemListed(msg.sender, _nftContractAddr, _tokenId, _price);
     }
 
-    /// @notice Explain to an end user what this does
-    /// @dev Explain to a developer any extra details
-    /// @param _tokenId a parameter just like in doxygen (must be followed by parameter name)
+    /// @notice allow seller to update the listed NFT
     function upadteNftSellingState(
         address _nftContractAddr,
         uint256 _tokenId,

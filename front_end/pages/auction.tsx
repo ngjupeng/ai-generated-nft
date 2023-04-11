@@ -21,7 +21,8 @@ import useTokenURI from "@/hooks/ainft/useTokenURI";
 
 const Auction = () => {
   const { openConnectModal } = useConnectModal();
-  const { isConnected } = useAccount();
+  const { isConnected: isWalletConnected } = useAccount();
+
   const { data: auctionState, isLoading: isAuctionStateLoading } =
     useAuctionState();
   const { data: recentAuctions, loading: recentAuctionsLoading } =
@@ -37,12 +38,12 @@ const Auction = () => {
     loading: highestBiddersLoading,
     refetch: refetchHighestBidders,
   } = useNewHighestBidder();
-  const [bidAmount, setBidAmount] = useState(0);
-  const [isWaiting, setIsWaiting] = useState(false);
-
   const { data: auctionTokenIPFSMeta, refetch: auctionTokenIPFSRefetch } =
     useTokenURI("8", false, fetchImage);
 
+  const [bidAmount, setBidAmount] = useState(0);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
@@ -55,7 +56,8 @@ const Auction = () => {
     if (currentAuction?.tokenId) {
       auctionTokenIPFSRefetch();
     }
-  }, [isCurrentAuctionLoading]);
+    setIsConnected(isWalletConnected);
+  }, [isCurrentAuctionLoading, isWalletConnected]);
 
   async function connectWallet() {
     if (!isConnected && openConnectModal) {
@@ -124,7 +126,7 @@ const Auction = () => {
         </>
       ) : (
         <div>
-          <div className="text-center mt-10">
+          <div className="text-center">
             Auction close in{" "}
             <span className="font-bold">
               {endIn(currentAuction?.endTimestamp)}
@@ -180,7 +182,7 @@ const Auction = () => {
                       <Loading title="Waiting transaction..." />
                     </div>
                   ) : (
-                    <form>
+                    <div>
                       <div className="mt-3 flex justify-center">
                         <div>Set your amount:</div>
                         {currentAuction?.highestBidAmount && (
@@ -210,7 +212,7 @@ const Auction = () => {
                         {bidAmount.toFixed(4)}
                         <FaEthereum className="text-lg" />
                       </div>
-                    </form>
+                    </div>
                   )
                 ) : (
                   <div
@@ -228,7 +230,7 @@ const Auction = () => {
                   </div>
                 ) : (
                   <ol className="w-[80%] mt-10 relative border-l border-gray-200 dark:border-gray-700">
-                    {newHighestBidder.newHighestBidders.map(
+                    {newHighestBidder?.newHighestBidders.map(
                       (bidder: HighestBidder) => (
                         <NewHighestBidder
                           key={bidder.transactionHash}

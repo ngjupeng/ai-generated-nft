@@ -23,6 +23,14 @@ const useNFTAuctionContract = () => {
     return transactionHash;
   };
 
+  const withdrawBid = async () => {
+    const tx: ContractTransaction = await contract?.withdrawBid({
+      gasLimit: 40000,
+    });
+    const { transactionHash } = await tx.wait();
+    return transactionHash;
+  };
+
   const getAuctionState = async (): Promise<BigInt> => {
     return contract?.getAuctionState();
   };
@@ -31,11 +39,17 @@ const useNFTAuctionContract = () => {
     return contract?.getCurrentAuction();
   };
 
+  const getBidderRefundAmount = async (address: string): Promise<BigInt> => {
+    return contract?.getBidderRefundAmount(address);
+  };
+
   return {
     contract,
     getAuctionState,
     getCurrentAuction,
     bidOnNFT,
+    withdrawBid,
+    getBidderRefundAmount,
   };
 };
 

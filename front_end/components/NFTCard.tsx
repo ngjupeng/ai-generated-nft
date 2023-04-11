@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Tilt from "react-parallax-tilt";
 import React from "react";
 

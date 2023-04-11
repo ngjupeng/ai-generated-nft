@@ -30,7 +30,7 @@ export function handleCancelListing(event: CancelListingEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   activeItem!.buyer = Address.fromString(
-    "0x000000000000000000000000000000notselling"
+    "0x0000000000000000000000000000000000000001"
   );
 
   entity.save();

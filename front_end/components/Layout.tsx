@@ -8,7 +8,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     <div className="bg-primary flex flex-col justify-between text-white font-poppin min-h-screen relative z-0">
       <div>
         <Navbar />
-        <div className="relative z-[-1]">
+        <div className="z-[-1]">
           <StarCanvas />
         </div>
       </div>

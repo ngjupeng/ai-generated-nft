@@ -1,11 +1,5 @@
-import {
-  RecentMinter,
-  NFTCard,
-  Spinner,
-  SuccessAlert,
-  Skeleton,
-} from "@/components";
-import React, { useState } from "react";
+import { RecentMinter, NFTCard, SuccessAlert, Skeleton } from "@/components";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
@@ -20,12 +14,12 @@ import { useUploadToNFtStorage } from "@/hooks/api/useUploadToNFtStorage";
 import { useRecentMinters } from "@/hooks/graph/useRecentMinters";
 import { getEthAmount } from "@/utils/removeDecimals";
 import { MintHistoryType } from "@/types/TMintHistory";
-import "react-toastify/dist/ReactToastify.css";
 import Loading from "@/components/Loading";
+import "react-toastify/dist/ReactToastify.css";
 
 const Mint = () => {
+  const { isConnected: isWalletConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { isConnected } = useAccount();
 
   const { data: latestPriceData } = useLatestPrice();
   const { mutate: requestImage } = useRequestImage(
@@ -45,12 +39,17 @@ const Mint = () => {
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [ipfsMetadata, setIpfsMetadata] = useState("");
   const [isRequestingImage, setIsRequestingImage] = useState(false);
   const [isUploadingToIPFS, setIsUploadingToIPFS] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [isWaitingPayment, setIsWaitingPayment] = useState(false);
   const [isPaymentFailure, setIsPaymentFailure] = useState(false);
-  const [ipfsMetadata, setIpfsMetadata] = useState("");
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    setIsConnected(isWalletConnected);
+  }, [isWalletConnected]);
 
   // event handler
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -207,7 +206,14 @@ const Mint = () => {
               /mint
             </div>
           </div>
-          {isConnected ? (
+          {!isConnected ? (
+            <div
+              className="mt-5 border border-1 border-white select-none cursor-pointer px-5 py-3 rounded-lg hover:scale-110 transition"
+              onClick={connectWallet}
+            >
+              Connect Wallet
+            </div>
+          ) : (
             <div>
               {isRequestingImage ? (
                 <Loading title="Generating image..." />
@@ -216,33 +222,24 @@ const Mint = () => {
               ) : isWaitingPayment ? (
                 <Loading title="Waiting transaction..." />
               ) : (
-                <form>
-                  <div className="flex items-center justif-center border border-x-0 border-t-0 border-b-2 border-gray-300">
-                    <input
-                      type="search"
-                      id="default-search"
-                      className="mt-5 px-5 py-2 block w-full text-sm border rounded-lg outline-none border-none bg-transparent text-white "
-                      placeholder="Description here..."
-                      required
-                      autoComplete="off"
-                      onChange={handleOnChange}
-                    />
-                    <div
-                      onClick={handleMint}
-                      className="cursor-pointer select-none mt-3 ml-2 text-xl transition hover:scale-125"
-                    >
-                      <GiMiner />
-                    </div>
+                <div className="flex items-center justif-center border border-x-0 border-t-0 border-b-2 border-gray-300">
+                  <input
+                    type="search"
+                    id="default-search"
+                    className="mt-5 px-5 py-2 block w-full text-sm border rounded-lg outline-none border-none bg-transparent text-white "
+                    placeholder="Description here..."
+                    required
+                    autoComplete="off"
+                    onChange={handleOnChange}
+                  />
+                  <div
+                    onClick={handleMint}
+                    className="cursor-pointer select-none mt-3 ml-2 text-xl transition hover:scale-125"
+                  >
+                    <GiMiner />
                   </div>
-                </form>
+                </div>
               )}
-            </div>
-          ) : (
-            <div
-              className="mt-5 border border-1 border-white select-none cursor-pointer px-5 py-3 rounded-lg hover:scale-110 transition"
-              onClick={connectWallet}
-            >
-              Connect Wallet
             </div>
           )}
         </div>
@@ -260,7 +257,7 @@ const Mint = () => {
               </div>
             ) : (
               <ol className="mt-10 relative border-l border-gray-200 dark:border-gray-700">
-                {recentMinters.mintedNewNFTs.map(
+                {recentMinters?.mintedNewNFTs?.map(
                   (mintHistory: MintHistoryType) => (
                     <RecentMinter
                       key={mintHistory.transactionHash}

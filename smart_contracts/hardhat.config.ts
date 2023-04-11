@@ -49,7 +49,7 @@ const config: HardhatUserConfig = {
         },
     },
     gasReporter: {
-        enabled: false,
+        enabled: true,
         outputFile: "gas-report.txt",
         noColors: true,
         // token: "MATIC",

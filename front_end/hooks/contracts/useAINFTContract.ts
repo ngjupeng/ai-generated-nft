@@ -1,9 +1,9 @@
 import * as wagmi from "wagmi";
 import { useProvider, useSigner } from "wagmi";
 
-import { ainftABI } from "../../constants/index";
+import { ainftABI, normalERC721ABI } from "../../constants/index";
 import { goerli } from "../../constants/index";
-import { ContractTransaction } from "ethers";
+import { ContractTransaction, ethers } from "ethers";
 
 const useAINFTContract = () => {
   const { data: signer } = useSigner();
@@ -33,6 +33,32 @@ const useAINFTContract = () => {
     }
   };
 
+  const approveToken = async ({
+    to,
+    tokenId,
+    nftContractAddr,
+  }: {
+    to: string;
+    tokenId: string;
+    nftContractAddr: string;
+  }): Promise<string> => {
+    const nftContract = new ethers.Contract(
+      nftContractAddr,
+      normalERC721ABI,
+      signer || provider
+    );
+
+    try {
+      const tx: ContractTransaction = await nftContract?.approve(to, tokenId, {
+        gasLimit: 100000,
+      });
+      const { transactionHash } = await tx.wait();
+      return transactionHash;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const getTokenURI = async (tokenId: number): Promise<string> => {
     return contract?.tokenURI(tokenId);
   };
@@ -51,6 +77,7 @@ const useAINFTContract = () => {
     getLatestPrice,
     getMinimumUSDAmount,
     getTokenURI,
+    approveToken,
   };
 };
 
