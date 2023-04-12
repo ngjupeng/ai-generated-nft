@@ -1,16 +1,16 @@
 import Loading from "@/components/Loading";
 import React, { useEffect, useState } from "react";
-import { goerli } from "../constants/";
+import { mumbai } from "../constants/";
 import { useAccount } from "wagmi";
 import truncateEthAddress from "truncate-eth-address";
-import { SuccessAlert } from "@/components";
-import { ethers } from "ethers";
-import { useApproveNFT } from "@/hooks/ainft";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { isNumber } from "@/utils/isNumber";
-import { ToastContainer, toast } from "react-toastify";
-import { RiAlarmWarningLine } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
+import { ethers } from "ethers";
+import { ToastContainer, toast } from "react-toastify";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { RiAlarmWarningLine } from "react-icons/ri";
+import { SuccessAlert } from "@/components";
+import { useApproveNFT } from "@/hooks/ainft";
+import { isNumber } from "@/utils/isNumber";
 import { useListItem } from "@/hooks/marketplace";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tooltip/dist/react-tooltip.css";
@@ -33,7 +33,7 @@ const SellNFT = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isValidInput, setIsValidInput] = useState(true);
   const [sellForm, setSellForm] = useState({
-    address: goerli.ainft,
+    address: mumbai.ainft,
     tokenId: "",
     amount: "",
   });
@@ -94,38 +94,42 @@ const SellNFT = () => {
   }
 
   function handleApproveNFTSuccess(transactionHash: string) {
-    toast.success("Transaction successfully, view your transaction detail!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "dark",
-      onClick: () => {
-        const url = `https://goerli.etherscan.io/tx/${transactionHash}`;
-        window.open(url, "_blank", "noopener,noreferrer");
-      },
-    });
+    setTimeout(() => {
+      toast.success("Transaction successfully, view your transaction detail!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        onClick: () => {
+          const url = `https://mumbai.polygonscan.com/tx/${transactionHash}`;
+          window.open(url, "_blank", "noopener,noreferrer");
+        },
+      });
+    }, 100);
     setCurrentStepper("sell");
   }
 
   function handleApproveNFTFailed() {
-    toast.error("Approve failed", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    setTimeout(() => {
+      toast.error("Approve failed", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }, 100);
   }
 
   function handleApprove() {
     approveNFT({
-      to: goerli.nftmarketplace,
+      to: mumbai.nftmarketplace,
       nftContractAddr: sellForm.address,
       tokenId: sellForm.tokenId,
     });
@@ -140,38 +144,42 @@ const SellNFT = () => {
   }
 
   function handleListItemSuccess(transactionHash: string) {
-    toast.success("Transaction successfully, view your transaction detail!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "dark",
-      onClick: () => {
-        const url = `https://goerli.etherscan.io/tx/${transactionHash}`;
-        window.open(url, "_blank", "noopener,noreferrer");
-      },
-    });
+    setTimeout(() => {
+      toast.success("Transaction successfully, view your transaction detail!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        onClick: () => {
+          const url = `https://mumbai.polygonscan.com/tx/${transactionHash}`;
+          window.open(url, "_blank", "noopener,noreferrer");
+        },
+      });
+    }, 100);
     resetState();
     setSellForm({
-      address: goerli.ainft,
+      address: mumbai.ainft,
       tokenId: "",
       amount: "",
     });
   }
 
   function handleListItemFailed() {
-    toast.error("List item failed", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    setTimeout(() => {
+      toast.error("List item failed", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }, 100);
   }
 
   return (
@@ -280,9 +288,9 @@ const SellNFT = () => {
           id="menu"
           className={`${
             isMenuShow ? "" : "hidden"
-          } w-full h-full bg-gray-900 bg-opacity-80 top-0 fixed sticky-0`}
+          } flex flex-col justify-center w-full h-screen bg-gray-900 bg-opacity-80 top-0 fixed sticky-0`}
         >
-          <div className="2xl:container 2xl:mx-auto py-48 px-4 md:px-28 flex justify-center items-center">
+          <div className="2xl:container 2xl:mx-auto px-4 md:px-28 flex justify-center items-center">
             <div className="w-96 md:w-auto bg-gray-800 relative flex flex-col justify-center items-cente px-3 py-5">
               <div className="pr-20">
                 {/* stepper */}
@@ -343,7 +351,7 @@ const SellNFT = () => {
                       {truncateEthAddress(address === undefined ? "" : address)}
                     </div>
                     <div>
-                      Approve to: {truncateEthAddress(goerli.nftmarketplace)}
+                      Approve to: {truncateEthAddress(mumbai.nftmarketplace)}
                     </div>
                     <div>
                       NFT contract: {truncateEthAddress(sellForm.address)}
@@ -363,7 +371,7 @@ const SellNFT = () => {
                   <div className="flex flex-col gap-7">
                     <h3 className="txt-lg font-semibold">Confirmation</h3>
                     <div>
-                      Listing on: {truncateEthAddress(goerli.nftauction)}
+                      Listing on: {truncateEthAddress(mumbai.nftauction)}
                     </div>
                     <div>Seller: {truncateEthAddress(address ?? "")}</div>
                     <div>Selling token id: {sellForm.tokenId}</div>

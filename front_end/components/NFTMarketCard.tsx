@@ -28,7 +28,7 @@ const NFTMarketCard = ({
 }) => {
   const { address, isConnected } = useAccount();
   const { data: auctionTokenIPFSMeta, refetch: auctionTokenIPFSRefetch } =
-    useTokenURI("8", true, fetchImage);
+    useTokenURI(activeItem.tokenId, true, fetchImage);
   const { mutate: cancelList } = useCancelListing(
     handleSuccessAndRefetch,
     handleTransactionFailed
@@ -114,7 +114,7 @@ const NFTMarketCard = ({
         draggable: true,
         theme: "dark",
         onClick: () => {
-          const url = `https://goerli.etherscan.io/tx/${transactionHash}`;
+          const url = `https://mumbai.polygonscan.com/tx/${transactionHash}`;
           window.open(url, "_blank", "noopener,noreferrer");
         },
       });
@@ -151,11 +151,15 @@ const NFTMarketCard = ({
       <ToastContainer />
 
       <div className="relative">
-        <img
-          className="h-[200px] w-full object-cover rounded-t-lg"
-          src={imageUrl}
-          alt="product image"
-        />
+        {imageUrl ? (
+          <img
+            className="h-[200px] w-full object-cover rounded-t-lg"
+            src={imageUrl}
+            alt={description}
+          />
+        ) : (
+          <div className="h-[200px] py-1 text-center">Loading...</div>
+        )}
 
         <div
           onClick={handleVoteNFTClick}
@@ -173,13 +177,7 @@ const NFTMarketCard = ({
       <div className="px-5 pb-3 relative">
         <div>
           <h5 className="w-[80%] mt-5 mb-2 font-semibold tracking-tight text-gray-900 dark:text-white truncate">
-            {/* {description} */}
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deleniti
-            ullam aspernatur laboriosam consequuntur quasi nisi, error, ea
-            dolorum ab consequatur excepturi, similique ex itaque sed fugiat
-            inventore natus accusantium dolor omnis soluta impedit! Omnis
-            praesentium vero cumque quibusdam dolorum officiis modi, enim ex ea
-            placeat deleniti voluptas illum maiores unde.
+            {description}
           </h5>
           <div>Owned By: {truncateEthAddress(activeItem.seller)}</div>
         </div>
@@ -201,7 +199,7 @@ const NFTMarketCard = ({
                   defaultValue={updatedPrice}
                   min={"0.001"}
                   step={"0.001"}
-                  className="bg-transparent outline-none border border-1 border-gray-300 px-2 py-1"
+                  className="w-[50%] bg-transparent outline-none border border-1 border-gray-300 px-2 py-1"
                 />
               ) : (
                 <span>{updatedPrice}</span>

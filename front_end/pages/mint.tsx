@@ -64,19 +64,21 @@ const Mint = () => {
 
   // if the metamask transaction is successful, call this
   async function handlePaymentSuccess(transactionHash: string) {
-    toast.success("Transaction successfully, view your transaction detail!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "dark",
-      onClick: () => {
-        const url = `https://goerli.etherscan.io/tx/${transactionHash}`;
-        window.open(url, "_blank", "noopener,noreferrer");
-      },
-    });
+    setTimeout(() => {
+      toast.success("Transaction successfully, view your transaction detail!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        onClick: () => {
+          const url = `https://mumbai.polygonscan.com/tx/${transactionHash}`;
+          window.open(url, "_blank", "noopener,noreferrer");
+        },
+      });
+    }, 100);
     setIsWaitingPayment(false);
     setIsSuccessful(true);
     await refetchRecentMinters();
@@ -144,7 +146,26 @@ const Mint = () => {
       setImageUrl("");
       setIsUploadingToIPFS(false);
       setIsWaitingPayment(false);
-      toast.error("Something went wrong, please try later", {
+      setTimeout(() => {
+        toast.error("Something went wrong, please try later", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }, 100);
+    }
+  }
+
+  // error handler for the failure happened on stable diffusion
+  function handleRequestImageError() {
+    setImageUrl("");
+    setTimeout(() => {
+      toast.error("Error when generating image!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -154,22 +175,7 @@ const Mint = () => {
         progress: undefined,
         theme: "dark",
       });
-    }
-  }
-
-  // error handler for the failure happened on stable diffusion
-  function handleRequestImageError() {
-    setImageUrl("");
-    toast.error("Error when generating image!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
+    }, 100);
   }
 
   return (

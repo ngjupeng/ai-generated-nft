@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { Configuration, OpenAIApi } from "openai";
 
 const requestImage = async (description: string) => {
   const response = await fetch(

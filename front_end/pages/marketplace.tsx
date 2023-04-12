@@ -1,7 +1,7 @@
 import { NFTMarketCard, NoItem } from "@/components";
 import { useActiveItems } from "@/hooks/graph/useActiveItems";
 import { ActiveItem } from "@/types/TActiveItem";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Skeleton = () => {
   return (
@@ -60,15 +60,6 @@ const LoadingSkeleton = () => {
   );
 };
 
-const activeItemTest: ActiveItem = {
-  id: "dasdasdasdsadasdasdasdsa",
-  seller: "0xC8965DD608a2a1293027E42Bf63c5E180436591d",
-  tokenId: "8",
-  nftAddress: "0xC8965DD608a2a1293027E42Bf63c5E180436591d",
-  votes: "0",
-  price: "10000000000",
-};
-
 const Marketplace = () => {
   const {
     data: activeItems,
@@ -76,6 +67,10 @@ const Marketplace = () => {
     error: activeItemsError,
     refetch: activeItemsRefetch,
   } = useActiveItems();
+
+  useEffect(() => {
+    activeItemsRefetch();
+  }, []);
 
   return (
     <div className="pt-5">
@@ -90,26 +85,23 @@ const Marketplace = () => {
           )
         ) : (
           <div>
-            {activeItems?.activeItems ? (
+            {activeItems.activeItems.length <= 0 ? (
               <>
                 <NoItem />
               </>
             ) : (
               <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-5 pb-20">
-                {/* {activeItems?.activeItems.map((activeItem: ActiveItem) => (
-                  <NFTMarketCard
-                    activeItem={activeItem}
-                    activeItemsRefetch={activeItemsRefetch}
-                  />
-                ))} */}
-                <NFTMarketCard
-                  activeItem={activeItemTest}
-                  activeItemsRefetch={activeItemsRefetch}
-                />
-                <NFTMarketCard
-                  activeItem={activeItemTest}
-                  activeItemsRefetch={activeItemsRefetch}
-                />
+                {activeItems?.activeItems.map((activeItem: ActiveItem) =>
+                  activeItem.buyer ===
+                  "0x0000000000000000000000000000000000000001" ? (
+                    <div></div>
+                  ) : (
+                    <NFTMarketCard
+                      activeItem={activeItem}
+                      activeItemsRefetch={activeItemsRefetch}
+                    />
+                  )
+                )}
               </div>
             )}
           </div>

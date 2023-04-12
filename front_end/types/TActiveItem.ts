@@ -5,4 +5,5 @@ export type ActiveItem = {
   nftAddress: string;
   votes: string;
   price: string;
+  buyer: string;
 };

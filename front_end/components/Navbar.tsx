@@ -1,12 +1,18 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Navbar = () => {
   return (
-    <div className="w-full md:px-5 pt-5">
+    <div className="w-full md:px-5 pt-5 mb-3">
       <div className="grid grid-cols-2 md:grid-cols-3 place-items-center justify-between px-3 lg:px-5">
-        <div className="text-3xl place-self-start">AINFT.</div>
+        <Link href={"/"}>
+          <div className="flex items-center flex-row-reverse gap-2 text-3xl place-self-start cursor-pointer">
+            AINFT.{" "}
+            <Image src="/favicon.png" alt="My Image" width={30} height={30} />
+          </div>
+        </Link>
         <div className="hidden md:flex justify-center items-center place-items-center gap-10 z-[30]">
           <Link href="/">Mint NFT</Link>
           <div>

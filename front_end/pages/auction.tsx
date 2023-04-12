@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import truncateEthAddress from "truncate-eth-address";
-import { MetaMaskAvatar } from "react-metamask-avatar";
+import moment from "moment";
 import Tilt from "react-parallax-tilt";
+import { MetaMaskAvatar } from "react-metamask-avatar";
 import { FaEthereum } from "react-icons/fa";
-import { useAuctionState, useBidNFT, useCurrentAuction } from "@/hooks/auction";
-import { AuctionSkeleton, RecentAuctions, Skeleton } from "@/components";
-import OpeningSoon from "@/components/OpeningSoon";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { useRecentAuctions } from "@/hooks/graph/useRecentAuctions";
 import { ethers } from "ethers";
 import { endIn } from "@/utils/endIn";
 import { ToastContainer, toast } from "react-toastify";
+import { AuctionSkeleton, Skeleton } from "@/components";
 import Loading from "@/components/Loading";
-import { useNewHighestBidder } from "@/hooks/graph/useNewHighestBidder";
+import OpeningSoon from "@/components/OpeningSoon";
 import NewHighestBidder from "@/components/NewHighestBidder";
 import { HighestBidder } from "@/types/TNewHighestBidder";
-import "react-toastify/dist/ReactToastify.css";
+import { useRecentAuctions } from "@/hooks/graph/useRecentAuctions";
+import { useNewHighestBidder } from "@/hooks/graph/useNewHighestBidder";
+import { useAuctionState, useBidNFT, useCurrentAuction } from "@/hooks/auction";
 import useTokenURI from "@/hooks/ainft/useTokenURI";
+import "react-toastify/dist/ReactToastify.css";
 
 const Auction = () => {
   const { openConnectModal } = useConnectModal();
@@ -39,7 +40,7 @@ const Auction = () => {
     refetch: refetchHighestBidders,
   } = useNewHighestBidder();
   const { data: auctionTokenIPFSMeta, refetch: auctionTokenIPFSRefetch } =
-    useTokenURI("8", false, fetchImage);
+    useTokenURI(currentAuction?.tokenId, false, fetchImage);
 
   const [bidAmount, setBidAmount] = useState(0);
   const [isWaiting, setIsWaiting] = useState(false);
@@ -82,19 +83,21 @@ const Auction = () => {
   }
 
   async function handleSuccess(transactionHash: string) {
-    toast.success("Transaction successfully, view your transaction detail!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "dark",
-      onClick: () => {
-        const url = `https://goerli.etherscan.io/tx/${transactionHash}`;
-        window.open(url, "_blank", "noopener,noreferrer");
-      },
-    });
+    setTimeout(() => {
+      toast.success("Transaction successfully, view your transaction detail!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        onClick: () => {
+          const url = `https://mumbai.polygonscan.com/tx/${transactionHash}`;
+          window.open(url, "_blank", "noopener,noreferrer");
+        },
+      });
+    }, 100);
 
     await refetchCurrentAuction();
 
@@ -115,13 +118,14 @@ const Auction = () => {
             <AuctionSkeleton />
           </div>
         </>
-      ) : !auctionState ? (
+      ) : !auctionState ||
+        currentAuction?.endTimestamp?.toString() - moment().unix() <= 0 ? (
         // auction closed
         <>
           <div>
             <OpeningSoon />
             <div className="my-7" />
-            <RecentAuctions recentAuctions={recentAuctions?.auctionEnds} />
+            {/* <RecentAuctions recentAuctions={recentAuctions?.auctionEnds} /> */}
           </div>
         </>
       ) : (
@@ -189,7 +193,12 @@ const Auction = () => {
                           <input
                             type="number"
                             onChange={(e) => {
-                              if (parseFloat(e.target.value) > bidAmount) {
+                              if (
+                                parseFloat(e.target.value) >
+                                +ethers.utils.formatEther(
+                                  currentAuction?.highestBidAmount.toString()
+                                )
+                              ) {
                                 setBidAmount(Number(e.target.value));
                               }
                             }}
@@ -223,7 +232,7 @@ const Auction = () => {
                   </div>
                 )}
               </div>
-              <div className="flex-[1]">
+              <div className="flex-[1] w-full flex justify-center lg:justify-start">
                 {highestBiddersLoading ? (
                   <div className="mt-5">
                     <Skeleton />

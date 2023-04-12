@@ -21,6 +21,10 @@ export const networkConfig: networkConfigInfo = {
         blockConfirmations: 5,
         ethUsdPriceFeed: "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e",
     },
+    80001: {
+        blockConfirmations: 5,
+        ethUsdPriceFeed: "0x0715A7794a1dc8e42615F059dD6e406A6594651A",
+    },
 }
 
 export const developmentChains = ["hardhat", "localhost"]

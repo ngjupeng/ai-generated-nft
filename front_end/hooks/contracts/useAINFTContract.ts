@@ -2,7 +2,7 @@ import * as wagmi from "wagmi";
 import { useProvider, useSigner } from "wagmi";
 
 import { ainftABI, normalERC721ABI } from "../../constants/index";
-import { goerli } from "../../constants/index";
+import { mumbai } from "../../constants/index";
 import { ContractTransaction, ethers } from "ethers";
 
 const useAINFTContract = () => {
@@ -10,7 +10,7 @@ const useAINFTContract = () => {
   const provider = useProvider();
 
   const contract = wagmi.useContract({
-    address: goerli.ainft,
+    address: mumbai.ainft,
     abi: ainftABI,
     signerOrProvider: signer || provider,
   });

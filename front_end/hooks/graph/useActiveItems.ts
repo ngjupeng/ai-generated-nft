@@ -2,13 +2,16 @@ import { useQuery, gql } from "@apollo/client";
 
 const GET_ACTIVE_ITEMS = gql`
   {
-    activeItems {
+    activeItems(
+      where: { buyer: "0x0000000000000000000000000000000000000000" }
+    ) {
       id
       seller
       tokenId
       nftAddress
       votes
       price
+      buyer
     }
   }
 `;

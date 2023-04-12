@@ -15,73 +15,72 @@ import {
 } from "../generated/schema";
 
 export function handleCancelListing(event: CancelListingEvent): void {
-  let entity = new CancelListing(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
+  // let entity = new CancelListing(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32())
+  // );
+  // entity.nftContractAddr = event.params.nftContractAddr;
+  // entity.tokenId = event.params.tokenId;
+
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+  // entity.save();
   let activeItem = ActiveItem.load(
-    getId(event.params.tokenId, event.params.nftContractAddr.toString())
+    getId(event.params.tokenId, event.params.nftContractAddr)
   );
-
-  entity.nftContractAddr = event.params.nftContractAddr;
-  entity.tokenId = event.params.tokenId;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
   activeItem!.buyer = Address.fromString(
     "0x0000000000000000000000000000000000000001"
   );
 
-  entity.save();
   activeItem!.save();
 }
 
 export function handleNFTSold(event: NFTSoldEvent): void {
-  let entity = new NFTSold(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
+  // let entity = new NFTSold(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32())
+  // );
+
+  // entity.buyer = event.params.buyer;
+  // entity.nftContractAddr = event.params.nftContractAddr;
+  // entity.tokenId = event.params.tokenId;
+  // entity.price = event.params.price;
+
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+  // entity.save();
+
   let activeItem = ActiveItem.load(
-    getId(event.params.tokenId, event.params.nftContractAddr.toString())
+    getId(event.params.tokenId, event.params.nftContractAddr)
   );
-
-  entity.buyer = event.params.buyer;
-  entity.nftContractAddr = event.params.nftContractAddr;
-  entity.tokenId = event.params.tokenId;
-  entity.price = event.params.price;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
   activeItem!.buyer = event.params.buyer;
 
-  entity.save();
   activeItem!.save();
 }
 
 export function handleNewNFTItemListed(event: NewNFTItemListedEvent): void {
-  let entity = new NewNFTItemListed(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
+  // let entity = new NewNFTItemListed(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32())
+  // );
+  // entity.seller = event.params.seller;
+  // entity.nftContractAddr = event.params.nftContractAddr;
+  // entity.tokenId = event.params.tokenId;
+  // entity.price = event.params.price;
+
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+  // entity.save();
+
   let newActiveItem = ActiveItem.load(
-    getId(event.params.tokenId, event.params.nftContractAddr.toString())
+    getId(event.params.tokenId, event.params.nftContractAddr)
   );
 
   if (!newActiveItem) {
     newActiveItem = new ActiveItem(
-      getId(event.params.tokenId, event.params.nftContractAddr.toString())
+      getId(event.params.tokenId, event.params.nftContractAddr)
     );
   }
-
-  entity.seller = event.params.seller;
-  entity.nftContractAddr = event.params.nftContractAddr;
-  entity.tokenId = event.params.tokenId;
-  entity.price = event.params.price;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
 
   newActiveItem.buyer = Address.fromString(
     "0x0000000000000000000000000000000000000000"
@@ -92,32 +91,28 @@ export function handleNewNFTItemListed(event: NewNFTItemListedEvent): void {
   newActiveItem.price = event.params.price;
   newActiveItem.votes = new BigInt(0);
 
-  entity.save();
   newActiveItem.save();
 }
 
 export function handleVoteOnNft(event: VoteOnNftEvent): void {
-  let entity = new VoteOnNft(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  );
+  // let entity = new VoteOnNft(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32())
+  // );
+  // entity.nftContractAddr = event.params.nftContractAddr;
+  // entity.tokenId = event.params.tokenId;
+  // entity.totalVote = event.params.totalVote;
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+  //
+  // entity.save();
   let activeItem = ActiveItem.load(
-    getId(event.params.tokenId, event.params.nftContractAddr.toString())
+    getId(event.params.tokenId, event.params.nftContractAddr)
   );
-
-  entity.nftContractAddr = event.params.nftContractAddr;
-  entity.tokenId = event.params.tokenId;
-  entity.totalVote = event.params.totalVote;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
   activeItem!.votes = activeItem!.votes!.plus(new BigInt(1));
-
-  entity.save();
   activeItem!.save();
 }
 
-function getId(id: BigInt, nftAddr: string): string {
-  return id.toHexString() + nftAddr;
+function getId(id: BigInt, nftAddr: Address): string {
+  return id.toHexString() + nftAddr.toHexString();
 }

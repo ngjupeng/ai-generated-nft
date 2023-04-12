@@ -2,7 +2,7 @@ import * as wagmi from "wagmi";
 import { useProvider, useSigner } from "wagmi";
 
 import { nftauctionABI } from "../../constants/index";
-import { goerli } from "../../constants/index";
+import { mumbai } from "../../constants/index";
 import { ContractTransaction } from "ethers";
 
 const useNFTAuctionContract = () => {
@@ -10,7 +10,7 @@ const useNFTAuctionContract = () => {
   const provider = useProvider();
 
   const contract = wagmi.useContract({
-    address: goerli.nftauction,
+    address: mumbai.nftauction,
     abi: nftauctionABI,
     signerOrProvider: signer || provider,
   });

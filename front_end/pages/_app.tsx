@@ -3,7 +3,8 @@ import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { configureChains, goerli, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { polygonMumbai } from "@wagmi/core/chains";
 import { publicProvider } from "wagmi/providers/public";
 import {
   getDefaultWallets,
@@ -14,7 +15,7 @@ import Layout from "@/components/Layout";
 
 // TODO: configure alchemyProvider
 const { chains, provider, webSocketProvider } = configureChains(
-  [goerli],
+  [polygonMumbai],
   [publicProvider()]
 );
 const { connectors } = getDefaultWallets({
@@ -28,7 +29,7 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 const apolloClient = new ApolloClient({
-  uri: "https://api.studio.thegraph.com/query/43988/ai-generated-nft/v0.0.3",
+  uri: "https://api.studio.thegraph.com/query/43988/ai-generated-nft-mumbai/v0.0.3",
   cache: new InMemoryCache(),
 });
 

@@ -1,4 +1,4 @@
-type ActiveItem @entity(immutable: true) {
+type ActiveItem @entity {
   id: ID!
   buyer: Bytes!
   seller: Bytes!

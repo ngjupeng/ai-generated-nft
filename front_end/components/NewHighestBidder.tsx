@@ -9,7 +9,7 @@ const NewHighestBidder = ({ bidder }: { bidder: HighestBidder }) => {
   return (
     <li className="mb-5 ml-6">
       <a
-        href={`https://goerli.etherscan.io/tx/${bidder.transactionHash}`}
+        href={`https://mumbai.polygonscan.com/tx/${bidder.transactionHash}`}
         className="block"
         target="_blank"
         rel="noreferrer noopenner"

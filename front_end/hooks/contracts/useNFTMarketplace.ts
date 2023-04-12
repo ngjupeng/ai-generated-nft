@@ -2,7 +2,7 @@ import * as wagmi from "wagmi";
 import { useProvider, useSigner } from "wagmi";
 
 import { nftmarketplaceABI } from "../../constants/index";
-import { goerli } from "../../constants/index";
+import { mumbai } from "../../constants/index";
 import { ContractTransaction } from "ethers";
 
 const useNFTMarketplaceContract = () => {
@@ -10,7 +10,7 @@ const useNFTMarketplaceContract = () => {
   const provider = useProvider();
 
   const contract = wagmi.useContract({
-    address: goerli.nftmarketplace,
+    address: mumbai.nftmarketplace,
     abi: nftmarketplaceABI,
     signerOrProvider: signer || provider,
   });
@@ -61,19 +61,15 @@ const useNFTMarketplaceContract = () => {
     nftContractAddr: string;
     tokenId: string;
   }): Promise<string> => {
-    try {
-      const tx: ContractTransaction = await contract?.cancelListing(
-        nftContractAddr,
-        tokenId,
-        {
-          gasLimit: 60000,
-        }
-      );
-      const { transactionHash } = await tx.wait();
-      return transactionHash;
-    } catch (error) {
-      throw error;
-    }
+    const tx: ContractTransaction = await contract?.cancelListing(
+      nftContractAddr,
+      tokenId,
+      {
+        gasLimit: 60000,
+      }
+    );
+    const { transactionHash } = await tx.wait();
+    return transactionHash;
   };
 
   const buyNft = async ({

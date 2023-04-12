@@ -11,7 +11,7 @@ const RecentMinter = ({
   return (
     <li className="mb-5 ml-6">
       <a
-        href={`https://goerli.etherscan.io/tx/${transactionHash}`}
+        href={`https://mumbai.polygonscan.com/tx/${transactionHash}`}
         className="block"
         target="_blank"
         rel="noreferrer noopenner"

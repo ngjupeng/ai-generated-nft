@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: AINFT
-    network: goerli
+    network: mumbai
     source:
-      address: "0x98094A46109c121787A4164A3c6f751acd57C927"
+      address: "0xfd10a534F783252154bA1D1287235546d27CF7aD"
       abi: AINFT
-      startBlock: 8759400
+      startBlock: 34280637
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -27,11 +27,11 @@ dataSources:
       file: ./src/ainft.ts
   - kind: ethereum
     name: NFTAuction
-    network: goerli
+    network: mumbai
     source:
-      address: "0xC2Ce3A9CB4f252dEA2BFC7Fa25758949d5807A64"
+      address: "0x51B60E63eE80272EF66Cb206EF4372CDD27ce893"
       abi: NFTAuction
-      startBlock: 8759400
+      startBlock: 34280637
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -54,11 +54,11 @@ dataSources:
       file: ./src/nft-auction.ts
   - kind: ethereum
     name: NFTMarketplace
-    network: goerli
+    network: mumbai
     source:
-      address: "0x2F04f24394B3F5383D9e3bb3946009fE9545d261"
+      address: "0xE27a16c32a4FD2b472FABC306BA8e4aE7119b7Ee"
       abi: NFTMarketplace
-      startBlock: 8759400
+      startBlock: 34280637
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
