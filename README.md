@@ -1,7 +1,7 @@
 
 # <img src="./readme/favicon.png" alt="Image Description" width="25" height="32"> AI-Generated NFT Marketplace with Auctions
 
-<p align="center">
+<p>
     <img src="https://img.shields.io/github/languages/top/bowbowzai/ai-generated-nft
 ?style=flat-square" alt="Top Language" />
     <img src="https://img.shields.io/github/repo-size/bowbowzai/ai-generated-nft?style=flat-square" alt="Repo Size" />
