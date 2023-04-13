@@ -1,4 +1,4 @@
 import { useRequestImage } from "./useRequestImage";
-import { useUploadToNFtStorage } from "./useUploadToNFtStorage";
+import { uploadToNFtStorage } from "./uploadToNFtStorage";
 
-export { useRequestImage, useUploadToNFtStorage };
+export { useRequestImage, uploadToNFtStorage };

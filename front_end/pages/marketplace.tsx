@@ -94,9 +94,10 @@ const Marketplace = () => {
                 {activeItems?.activeItems.map((activeItem: ActiveItem) =>
                   activeItem.buyer ===
                   "0x0000000000000000000000000000000000000001" ? (
-                    <div></div>
+                    <div key={activeItem.id}></div>
                   ) : (
                     <NFTMarketCard
+                      key={activeItem.id}
                       activeItem={activeItem}
                       activeItemsRefetch={activeItemsRefetch}
                     />

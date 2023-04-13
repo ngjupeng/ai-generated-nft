@@ -1,7 +1,7 @@
 import { NFTStorage, File, Blob } from "nft.storage";
 import { Token } from "nft.storage/dist/src/token";
 
-const useUploadToNFtStorage = async (
+const uploadToNFtStorage = async (
   blob: Blob,
   description: string
 ): Promise<
@@ -27,4 +27,4 @@ const useUploadToNFtStorage = async (
   return metadata;
 };
 
-export { useUploadToNFtStorage };
+export { uploadToNFtStorage };

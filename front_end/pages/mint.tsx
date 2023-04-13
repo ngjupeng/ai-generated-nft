@@ -12,7 +12,7 @@ import { getEthAmount } from "@/utils/removeDecimals";
 import { MintHistoryType } from "@/types/TMintHistory";
 import { Loading } from "@/components";
 import { useLatestPrice, useMintNFT } from "@/hooks/ainft";
-import { useRequestImage, useUploadToNFtStorage } from "@/hooks/api";
+import { useRequestImage, uploadToNFtStorage } from "@/hooks/api";
 import { useRecentMinters } from "@/hooks/graph";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -134,7 +134,7 @@ const Mint = () => {
       setIsRequestingImage(false);
       setIsUploadingToIPFS(true);
       // upload the base64 image to nft storage
-      const metadata = await useUploadToNFtStorage(data, description);
+      const metadata = await uploadToNFtStorage(data, description);
       setIpfsMetadata(metadata.ipnft);
       setTitle(description);
       setDescription("");
