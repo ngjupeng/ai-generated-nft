@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygonMumbai } from "@wagmi/core/chains";
-import { publicProvider } from "wagmi/providers/public";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+
 import {
   getDefaultWallets,
   RainbowKitProvider,
@@ -16,7 +17,7 @@ import Layout from "@/components/Layout";
 // TODO: configure alchemyProvider
 const { chains, provider, webSocketProvider } = configureChains(
   [polygonMumbai],
-  [publicProvider()]
+  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || "" })]
 );
 const { connectors } = getDefaultWallets({
   appName: "AI Generated NFT",

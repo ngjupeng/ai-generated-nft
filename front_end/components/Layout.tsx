@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from "react";
-import Navbar from "./Navbar";
+import { BsInfoCircleFill } from "react-icons/bs";
+import Head from "next/head";
 import { StarCanvas } from "./canvas";
 import Footer from "./Footer";
-import Head from "next/head";
+import Navbar from "./Navbar";
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
@@ -18,7 +19,15 @@ const Layout = ({ children }: PropsWithChildren) => {
         </div>
       </div>
       <div>{children}</div>
-      <div>
+      <div className="relative">
+        <div className="absolute bottom-4 right-4">
+          <div className="group text-2xl cursor-pointer text-gray-400">
+            <div className="hidden group-peer:flex absolute right-10 -top-10">
+              NFT contract:
+            </div>
+            <BsInfoCircleFill />
+          </div>
+        </div>
         <Footer />
       </div>
     </div>

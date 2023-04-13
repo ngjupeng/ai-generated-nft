@@ -13,6 +13,7 @@ const Navbar = () => {
             <Image src="/favicon.png" alt="My Image" width={30} height={30} />
           </div>
         </Link>
+        {/* large screen navbar */}
         <div className="hidden md:flex justify-center items-center place-items-center gap-10 z-[30]">
           <Link href="/">Mint NFT</Link>
           <div>
@@ -56,6 +57,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        {/* mobile screen navbar */}
         <div className="z-[40] bg-gray-800 md:hidden fixed bottom-10 left-[50%] -translate-x-[50%]">
           <div className="inline-flex rounded-md shadow-sm" role="group">
             <Link href={"/"}>
@@ -124,6 +126,7 @@ w-[200px] rounded-lg bg-white flex-col drop-shadow-lg border border-1 border-gra
             </div>
           </div>
         </div>
+        {/* connect wallet buton */}
         <div className="place-self-end">
           <ConnectButton />
         </div>

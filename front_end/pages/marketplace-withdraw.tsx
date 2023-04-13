@@ -3,19 +3,20 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 import { Withdraw } from "@/components";
-import useWithdrawEarned from "@/hooks/marketplace/useWithdrawEarned";
-import useSellerEarned from "@/hooks/marketplace/useSellerEarned";
+import { useWithdrawEarned, useSellerEarned } from "@/hooks/marketplace";
 
 const MarketplaceWithdraw = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
 
   const { address, isConnected: isWalletConnected } = useAccount();
+
   const {
     data: sellerEarned,
     refetch: sellerEarnedRefetch,
     isLoading: sellerEarnedLoading,
   } = useSellerEarned(address ? address : "");
+
   const { mutate: withdrawEarned } = useWithdrawEarned(
     handleWithdrawEarnedSuccess,
     handleWithdrawEarnedFailed

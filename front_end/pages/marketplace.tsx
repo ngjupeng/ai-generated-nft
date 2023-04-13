@@ -1,7 +1,7 @@
-import { NFTMarketCard, NoItem } from "@/components";
-import { useActiveItems } from "@/hooks/graph/useActiveItems";
-import { ActiveItem } from "@/types/TActiveItem";
 import React, { useEffect } from "react";
+import { ActiveItem } from "@/types/TActiveItem";
+import { NFTMarketCard, NoItem } from "@/components";
+import { useActiveItems } from "@/hooks/graph";
 
 const Skeleton = () => {
   return (

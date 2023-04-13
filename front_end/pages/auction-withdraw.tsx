@@ -7,11 +7,13 @@ import { useBidderRefundAmount, useWithdrawBid } from "@/hooks/auction";
 
 const AuctionWithdraw = () => {
   const { address, isConnected: isWalletConnected } = useAccount();
+
   const {
     data: bidderRefundAmount,
     refetch: bidderRefundAmountRefetch,
     isLoading: bidderRefundAmountLoading,
   } = useBidderRefundAmount(address ? address : "");
+
   const { mutate: withdrawBid } = useWithdrawBid(
     handleWithdrawBidSuccess,
     handleWithdrawBidFailed

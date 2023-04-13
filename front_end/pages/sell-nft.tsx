@@ -1,16 +1,15 @@
-import Loading from "@/components/Loading";
 import React, { useEffect, useState } from "react";
-import { mumbai } from "../constants/";
-import { useAccount } from "wagmi";
 import truncateEthAddress from "truncate-eth-address";
+import { useAccount } from "wagmi";
 import { Tooltip } from "react-tooltip";
 import { ethers } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { RiAlarmWarningLine } from "react-icons/ri";
-import { SuccessAlert } from "@/components";
-import { useApproveNFT } from "@/hooks/ainft";
+import { mumbai } from "../constants/";
 import { isNumber } from "@/utils/isNumber";
+import { SuccessAlert, Loading } from "@/components";
+import { useApproveNFT } from "@/hooks/ainft";
 import { useListItem } from "@/hooks/marketplace";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tooltip/dist/react-tooltip.css";
@@ -19,10 +18,12 @@ const SellNFT = () => {
   const { openConnectModal } = useConnectModal();
   const { address: walletAddress, isConnected: isWalletConnected } =
     useAccount();
+
   const { mutate: approveNFT, isLoading: approveLoading } = useApproveNFT(
     handleApproveNFTSuccess,
     handleApproveNFTFailed
   );
+
   const { mutate: listItem, isLoading: listingLoading } = useListItem(
     handleListItemSuccess,
     handleListItemFailed

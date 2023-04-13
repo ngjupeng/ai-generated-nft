@@ -1,7 +1,7 @@
-import { MintHistoryType } from "@/types/TMintHistory";
 import React from "react";
-import truncateEthAddress from "truncate-eth-address";
 import moment from "moment";
+import truncateEthAddress from "truncate-eth-address";
+import { MintHistoryType } from "@/types/TMintHistory";
 
 const RecentMinter = ({
   user,

@@ -1,9 +1,9 @@
-import { HighestBidder } from "@/types/TNewHighestBidder";
-import { ethers } from "ethers";
-import moment from "moment";
 import React from "react";
+import moment from "moment";
+import { ethers } from "ethers";
 import { FaEthereum } from "react-icons/fa";
 import truncateEthAddress from "truncate-eth-address";
+import { HighestBidder } from "@/types/TNewHighestBidder";
 
 const NewHighestBidder = ({ bidder }: { bidder: HighestBidder }) => {
   return (

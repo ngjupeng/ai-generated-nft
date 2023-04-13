@@ -8,13 +8,12 @@ import { FaEthereum } from "react-icons/fa";
 import { GiMiner } from "react-icons/gi";
 import { AiOutlineLink } from "react-icons/ai";
 import { blobToBase64 } from "@/utils/blobToBase64";
-import { useRequestImage } from "@/hooks/api/useRequestImage";
-import { useLatestPrice, useMintNFT } from "@/hooks/ainft";
-import { useUploadToNFtStorage } from "@/hooks/api/useUploadToNFtStorage";
-import { useRecentMinters } from "@/hooks/graph/useRecentMinters";
 import { getEthAmount } from "@/utils/removeDecimals";
 import { MintHistoryType } from "@/types/TMintHistory";
-import Loading from "@/components/Loading";
+import { Loading } from "@/components";
+import { useLatestPrice, useMintNFT } from "@/hooks/ainft";
+import { useRequestImage, useUploadToNFtStorage } from "@/hooks/api";
+import { useRecentMinters } from "@/hooks/graph";
 import "react-toastify/dist/ReactToastify.css";
 
 const Mint = () => {
@@ -22,14 +21,17 @@ const Mint = () => {
   const { openConnectModal } = useConnectModal();
 
   const { data: latestPriceData } = useLatestPrice();
+
   const { mutate: requestImage } = useRequestImage(
     handleRequestImageSuccess,
     handleRequestImageError
   );
+
   const { mutate: mintNFT } = useMintNFT(
     handlePaymentSuccess,
     handlePaymentFailure
   );
+
   const {
     data: recentMinters,
     loading: isRecentMintersLoading,

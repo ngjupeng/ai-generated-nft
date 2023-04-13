@@ -1,7 +1,6 @@
-import { Skeleton } from "@/components";
-import Loading from "@/components/Loading";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import React from "react";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { Skeleton, Loading } from "@/components";
 
 interface WithdrawProps {
   title: string;

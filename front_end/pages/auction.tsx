@@ -9,15 +9,17 @@ import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { endIn } from "@/utils/endIn";
 import { ToastContainer, toast } from "react-toastify";
-import { AuctionSkeleton, Skeleton } from "@/components";
-import Loading from "@/components/Loading";
-import OpeningSoon from "@/components/OpeningSoon";
-import NewHighestBidder from "@/components/NewHighestBidder";
 import { HighestBidder } from "@/types/TNewHighestBidder";
-import { useRecentAuctions } from "@/hooks/graph/useRecentAuctions";
-import { useNewHighestBidder } from "@/hooks/graph/useNewHighestBidder";
+import {
+  AuctionSkeleton,
+  Skeleton,
+  Loading,
+  OpeningSoon,
+  NewHighestBidder,
+} from "@/components";
+import { useRecentAuctions, useNewHighestBidder } from "@/hooks/graph";
 import { useAuctionState, useBidNFT, useCurrentAuction } from "@/hooks/auction";
-import useTokenURI from "@/hooks/ainft/useTokenURI";
+import { useTokenURI } from "@/hooks/ainft";
 import "react-toastify/dist/ReactToastify.css";
 
 const Auction = () => {
@@ -26,19 +28,24 @@ const Auction = () => {
 
   const { data: auctionState, isLoading: isAuctionStateLoading } =
     useAuctionState();
+
   const { data: recentAuctions, loading: recentAuctionsLoading } =
     useRecentAuctions();
+
   const {
     data: currentAuction,
     refetch: refetchCurrentAuction,
     isLoading: isCurrentAuctionLoading,
   } = useCurrentAuction();
+
   const { mutate: bidNFT } = useBidNFT(handleSuccess, handleFailure);
+
   const {
     data: newHighestBidder,
     loading: highestBiddersLoading,
     refetch: refetchHighestBidders,
   } = useNewHighestBidder();
+
   const { data: auctionTokenIPFSMeta, refetch: auctionTokenIPFSRefetch } =
     useTokenURI(currentAuction?.tokenId, false, fetchImage);
 

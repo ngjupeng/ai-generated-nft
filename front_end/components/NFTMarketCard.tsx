@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ActiveItem } from "@/types/TActiveItem";
 import { FaEthereum } from "react-icons/fa";
 import { ethers } from "ethers";
 import { AiFillLike } from "react-icons/ai";
@@ -8,12 +7,15 @@ import { useAccount } from "wagmi";
 import { Tooltip } from "react-tooltip";
 import { ToastContainer, toast } from "react-toastify";
 import { ApolloQueryResult, OperationVariables } from "@apollo/client";
-import { useTokenURI } from "@/hooks/ainft";
 import truncateEthAddress from "truncate-eth-address";
-import useCancelListing from "@/hooks/marketplace/useCancelListing";
-import useBuyNFT from "@/hooks/marketplace/useBuyNFT";
-import useVoteOnNFT from "@/hooks/marketplace/useVoteOnNFT";
-import useUpdateListedItem from "@/hooks/marketplace/useUpdateListedItem";
+import { ActiveItem } from "@/types/TActiveItem";
+import { useTokenURI } from "@/hooks/ainft";
+import {
+  useBuyNFT,
+  useVoteOnNFT,
+  useUpdateListedItem,
+  useCancelListing,
+} from "@/hooks/marketplace";
 import "react-tooltip/dist/react-tooltip.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -27,20 +29,25 @@ const NFTMarketCard = ({
   ) => Promise<ApolloQueryResult<any>>;
 }) => {
   const { address, isConnected } = useAccount();
+
   const { data: auctionTokenIPFSMeta, refetch: auctionTokenIPFSRefetch } =
     useTokenURI(activeItem.tokenId, true, fetchImage);
+
   const { mutate: cancelList } = useCancelListing(
     handleSuccessAndRefetch,
     handleTransactionFailed
   );
+
   const { mutate: buyNFT } = useBuyNFT(
     handleSuccessAndRefetch,
     handleTransactionFailed
   );
+
   const { mutate: voteNFT } = useVoteOnNFT(
     handleSuccessAndRefetch,
     handleTransactionFailed
   );
+
   const { mutate: updateListedItem } = useUpdateListedItem(
     handleSuccessAndRefetch,
     handleTransactionFailed
@@ -120,6 +127,7 @@ const NFTMarketCard = ({
       });
     }, 100);
   }
+
   function handleTransactionFailed(err: any) {
     setTimeout(() => {
       toast.error("Something went wrong, please try later", {

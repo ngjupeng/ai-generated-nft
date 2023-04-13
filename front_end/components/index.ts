@@ -1,14 +1,19 @@
-import Navbar from "./Navbar";
-import RecentMinter from "./RecentMinter";
-import NFTCard from "./NFTCard";
-import Spinner from "./Spinner";
-import SuccessAlert from "./SuccessAlert";
-import Skeleton from "./Skeleton";
-import Footer from "./Footer";
 import AuctionSkeleton from "./AuctionSkeleton";
-import RecentAuctions from "./RecentAuctions";
+import Footer from "./Footer";
+import Layout from "./Layout";
+import Loading from "./Loading";
+import Navbar from "./Navbar";
+import NewHighestBidder from "./NewHighestBidder";
+import NFTCard from "./NFTCard";
 import NFTMarketCard from "./NFTMarketCard";
 import NoItem from "./NoItem";
+import OpeningSoon from "./OpeningSoon";
+import RecentAuctions from "./RecentAuctions";
+import RecentMinter from "./RecentMinter";
+import Skeleton from "./Skeleton";
+import Spinner from "./Spinner";
+import SuccessAlert from "./SuccessAlert";
+import Winner from "./Winner";
 import Withdraw from "./Withdraw";
 
 export {
@@ -24,4 +29,9 @@ export {
   NFTMarketCard,
   NoItem,
   Withdraw,
+  Layout,
+  Loading,
+  NewHighestBidder,
+  OpeningSoon,
+  Winner,
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { FaEthereum } from "react-icons/fa";
-import Winner from "./Winner";
 import { AuctionsEndType } from "../types/TAuctionsEnd";
+import Winner from "./Winner";
 
 const RecentAuctions = ({
   recentAuctions,
