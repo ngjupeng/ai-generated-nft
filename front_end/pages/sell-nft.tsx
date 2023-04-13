@@ -197,12 +197,11 @@ const SellNFT = () => {
                 <Tooltip
                   anchorSelect=".my-anchor-element"
                   place="top"
-                  className="text-sm max-w-[200px]"
+                  className="text-xs max-w-[150px]"
                 >
                   <div>
                     Please make sures you entered the correct NFTS contract
-                    address and token ID to prevent the risk of losing the
-                    funds.
+                    address and token ID.
                   </div>
                 </Tooltip>
                 <a className="my-anchor-element" data-tooltip-id="my-tooltip">

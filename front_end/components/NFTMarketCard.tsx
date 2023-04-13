@@ -129,18 +129,20 @@ const NFTMarketCard = ({
   }
 
   function handleTransactionFailed(err: any) {
-    setTimeout(() => {
-      toast.error("Something went wrong, please try later", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }, 100);
+    if (!err.toString().includes("user rejected transaction")) {
+      setTimeout(() => {
+        toast.error("Something went wrong, please try later", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }, 100);
+    }
   }
 
   async function fetchImage(ipfsMetadata: string) {
@@ -169,18 +171,20 @@ const NFTMarketCard = ({
           <div className="h-[200px] py-1 text-center">Loading...</div>
         )}
 
-        <div
-          onClick={handleVoteNFTClick}
-          className="absolute top-2 right-2 transition hover:scale-110 cursor-pointer"
-        >
-          <a
-            data-tooltip-id="my-tooltip"
-            data-tooltip-content="Give a like!"
-            data-tooltip-place="top"
+        {isConnected && (
+          <div
+            onClick={handleVoteNFTClick}
+            className="absolute top-2 right-2 transition hover:scale-110 cursor-pointer"
           >
-            <FcLike className="w-10 h-10 " />
-          </a>
-        </div>
+            <a
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Give a like!"
+              data-tooltip-place="top"
+            >
+              <FcLike className="w-10 h-10 " />
+            </a>
+          </div>
+        )}
       </div>
       <div className="px-5 pb-3 relative">
         <div>

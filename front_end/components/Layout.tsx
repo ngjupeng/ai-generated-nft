@@ -19,17 +19,45 @@ const Layout = ({ children }: PropsWithChildren) => {
         </div>
       </div>
       <div>{children}</div>
-      <div className="relative">
-        <div className="absolute bottom-4 right-4">
-          <div className="group text-2xl cursor-pointer text-gray-400">
-            <div className="hidden group-peer:flex absolute right-10 -top-10">
-              NFT contract:
-            </div>
+      <div className="hidden md:block absolute bottom-4 right-4">
+        <div>
+          <button
+            type="button"
+            className="peer px-4 py-2 text-xl font-medium text-white"
+          >
             <BsInfoCircleFill />
+          </button>
+          <div
+            className="hidden fixed bottom-10 right-[150px] translate-x-[50%] peer-hover:flex hover:flex
+w-[200px] rounded-lg flex-col drop-shadow-lg border border-1 border-gray-300 text-white overflow-hidden z-[30]"
+          >
+            <a
+              href="https://mumbai.polygonscan.com/address/0xfd10a534F783252154bA1D1287235546d27CF7aD"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="cursor-pointer px-3 py-2"
+            >
+              NFT Contract
+            </a>
+            <a
+              href="https://mumbai.polygonscan.com/address/0x51B60E63eE80272EF66Cb206EF4372CDD27ce893"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="cursor-pointer px-3 py-2"
+            >
+              Auction Contract
+            </a>
+            <a
+              href="https://mumbai.polygonscan.com/address/0xE27a16c32a4FD2b472FABC306BA8e4aE7119b7Ee"
+              target="_blank"
+              className="cursor-pointer px-3 py-2 truncate"
+            >
+              Marketplace Contract
+            </a>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

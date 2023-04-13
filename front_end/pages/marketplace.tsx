@@ -85,7 +85,7 @@ const Marketplace = () => {
           )
         ) : (
           <div>
-            {activeItems.activeItems.length <= 0 ? (
+            {activeItems?.activeItems?.length <= 0 ? (
               <>
                 <NoItem />
               </>

@@ -83,6 +83,11 @@ const Mint = () => {
     }, 100);
     setIsWaitingPayment(false);
     setIsSuccessful(true);
+    // clear the success message after 20s
+    setTimeout(() => {
+      setIsSuccessful(false);
+      setIsPaymentFailure(false);
+    }, 20000);
     await refetchRecentMinters();
   }
 
@@ -90,6 +95,10 @@ const Mint = () => {
   function handlePaymentFailure() {
     setIsWaitingPayment(false);
     setIsPaymentFailure(true);
+
+    setTimeout(() => {
+      setIsPaymentFailure(false);
+    }, 20000);
   }
 
   // call when click on the "minter" button
@@ -139,11 +148,6 @@ const Mint = () => {
         tokenUri: `https://ipfs.io/ipfs/${metadata.ipnft}/metadata.json`,
         ethAmount: ethers.utils.parseEther(payAmount.toString()).toString(),
       });
-
-      // clear the success message after 20s
-      setTimeout(() => {
-        setIsSuccessful(false);
-      }, 20000);
     } catch (error) {
       setImageUrl("");
       setIsUploadingToIPFS(false);
@@ -251,9 +255,23 @@ const Mint = () => {
             </div>
           )}
         </div>
+
+        {/* alert messages mobile */}
+        <div className="block lg:hidden">
+          {isSuccessful && (
+            <SuccessAlert
+              isFailure={false}
+              description="You successfully minted an AI generated NFT!"
+            />
+          )}
+          {isPaymentFailure && (
+            <SuccessAlert isFailure={true} description="Payment failed" />
+          )}
+        </div>
+
         {/* recent minters */}
         <div className="mt-10 lg:mt-0 flex-1">
-          <div className="w-[80%]">
+          <div className="w-full lg:w-[80%]">
             <div className="flex items-center">
               <h2 className="text-lg">Recent Mint</h2>
               <span className="text-2xl">💥</span>
@@ -280,16 +298,18 @@ const Mint = () => {
           </div>
         </div>
       </div>
-      {/* alert messages */}
-      {isSuccessful && (
-        <SuccessAlert
-          isFailure={false}
-          description="You successfully minted an AI generated NFT!"
-        />
-      )}
-      {isPaymentFailure && (
-        <SuccessAlert isFailure={true} description="Payment failed" />
-      )}
+      {/* alert messages desktop */}
+      <div className="hidden lg:block">
+        {isSuccessful && (
+          <SuccessAlert
+            isFailure={false}
+            description="You successfully minted an AI generated NFT!"
+          />
+        )}
+        {isPaymentFailure && (
+          <SuccessAlert isFailure={true} description="Payment failed" />
+        )}
+      </div>
     </div>
   );
 };

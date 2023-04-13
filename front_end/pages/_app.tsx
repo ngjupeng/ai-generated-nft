@@ -30,7 +30,7 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 const apolloClient = new ApolloClient({
-  uri: "https://api.studio.thegraph.com/query/43988/ai-generated-nft-mumbai/v0.0.3",
+  uri: "https://api.studio.thegraph.com/query/43988/ai-generated-nft-mumbai/v0.0.4",
   cache: new InMemoryCache(),
 });
 

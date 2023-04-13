@@ -109,7 +109,7 @@ export function handleVoteOnNft(event: VoteOnNftEvent): void {
   let activeItem = ActiveItem.load(
     getId(event.params.tokenId, event.params.nftContractAddr)
   );
-  activeItem!.votes = activeItem!.votes!.plus(new BigInt(1));
+  activeItem!.votes = event.params.totalVote;
   activeItem!.save();
 }
 
